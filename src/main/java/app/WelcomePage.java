@@ -71,6 +71,10 @@ public class WelcomePage implements Servlet {
         writer.println("<a href=\"./aboutus\">Learn More About Us</a>");
         writer.println("</section>");
 
+        writer.println("<section>");
+        writer.println("<a href=\"./register\">Register</a>");
+        writer.println("</section>");
+
         writer.println("</body>");
         writer.println("</html>");
 

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class AboutUsPage extends GenericServlet {
+
     public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
         servletResponse.setContentType("text/html");
         PrintWriter writer = servletResponse.getWriter();
@@ -29,7 +30,7 @@ public class AboutUsPage extends GenericServlet {
 
 // Header
         writer.println("<header>");
-        writer.println("<h1>About Ezen Training Academy</h1>");
+        writer.println("<h1>About COHORT 12 Training PORTA</h1>");
         writer.println("</header>");
 
 // Who we are
@@ -64,7 +65,7 @@ public class AboutUsPage extends GenericServlet {
 
 // Navigation
         writer.println("<section>");
-        writer.println("<a href=\"./\"><- Go back to Home Page</a>");
+        writer.println("<a href=\"./\">&larr; Go back to Home Page</a>");
         writer.println("</section>");
 
         writer.println("</body>");

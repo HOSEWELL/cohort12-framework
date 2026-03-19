@@ -20,4 +20,12 @@
     <servlet-name>AboutUs</servlet-name>
     <url-pattern>/aboutus</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>Register</servlet-name>
+    <servlet-class>app.RegisterPage</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Register</servlet-name>
+    <url-pattern>/register</url-pattern>
+  </servlet-mapping>
 </web-app>
