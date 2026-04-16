@@ -67,6 +67,37 @@ g) Filters
 
 i) Listeners & Events
 
+h) Servlet - write html inside java
+
+j) Jsp -  write java inside html
+    index.jsp -> Index_jsp.java -> Index_jsp.class
+
+    Scripting Element
+    a) Comment <%-- comment --%>
+    b) Directive - they direction to server regarding the page
+               - <%@ directive %>
+               example
+               <%@ page import="" %>
+    c) Declaration <%! declarations %>
+                   <%! int loginTime = new Date() %>
+
+    d) Scriptlets <% code %>
+
+    e) Expression - display as string
+            <%= loginTime %>
+
+    Implicit Objects
+    a) out = JspWriter
+    b) request = HttpServletRequest
+    c) response = HttpServletResponse
+    d) session = HttpSession
+    e) application = ServletContext
+    f) config = ServletConfig
+
+
+
+
+
 
 
 

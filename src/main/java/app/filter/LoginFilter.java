@@ -15,13 +15,15 @@ public class LoginFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
         HttpSession session = httpRequest.getSession(false);
 
+        String defaultUri = httpRequest.getContextPath() + "/";
         String loginUri = httpRequest.getContextPath() + "/login";
-        String welcomeUri = httpRequest.getContextPath() + "/";
+        String indexUri = httpRequest.getContextPath() + "/index.jsp";
         String pageRequestUri = httpRequest.getRequestURI();
         boolean loggedIn = session != null && session.getAttribute("SESSION_ID") != null;
 
         if(loggedIn || pageRequestUri.equalsIgnoreCase(loginUri)
-                || pageRequestUri.equalsIgnoreCase(welcomeUri)){
+                || pageRequestUri.equalsIgnoreCase(defaultUri)
+                || pageRequestUri.equalsIgnoreCase(indexUri)){
             filterChain.doFilter(servletRequest, servletResponse);
 
         } else {
