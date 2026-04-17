@@ -158,6 +158,7 @@ public class BaseAction<T> extends HttpServlet {
         return this.getType().getSimpleName() + "_DB";
     }
 
+    @SuppressWarnings("unchecked")
     public List<T> returnData(HttpSession session){
 
         System.out.println("DB NAME: " + this.dbName());

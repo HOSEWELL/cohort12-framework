@@ -88,11 +88,35 @@ j) Jsp -  write java inside html
 
     Implicit Objects
     a) out = JspWriter
+        - out.print();
+        - out.println();
+        - out.newLine();
     b) request = HttpServletRequest
+        - request.getParameter(String name);
+        - request.getParameterNames()
+        - request.getParameterValues()
+        - request.getParameterMap()
+        - request.setAttribute()
+        - request.getHeader(String name)
     c) response = HttpServletResponse
+        - response.setContentType(String type)
+        - response.setHeader(String name, String value)
+        - response.getWriter()
     d) session = HttpSession
     e) application = ServletContext
     f) config = ServletConfig
+
+    JSP ACTIONS
+        standard tags that simplify code.
+        <jsp:text>
+        <jsp:body>
+        <jsp:include> - include another resource to the current JSP page
+        <jsp:forward> - forwarding request to the another resource
+        <jsp:param>
+
+        <jsp:useBean>
+        <jsp:setProperty>
+        <jsp:getProperty>
 
 
 

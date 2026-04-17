@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="app.utility.Courses" %>
+<%@ page import="java.time.LocalTime" %>
+
 
 <%! Courses courses = new Courses(); %>
 <!DOCTYPE html>
@@ -35,16 +37,36 @@
 
     <%-- Header --%>
     <header>
-        <h1>Welcome to <%= application.getInitParameter("applicationName") %> Training PORTAL</h1>
-        <p>Empowering Developers with Real-World Skills</p>
-        <%! int totalSum = 0; %>
-        <p>
+        <h1>
         <%
-            for (int x = 0; x< 20; x++)
-                totalSum += x;
-         %>
-         <%= totalSum %>
-         </p>
+            LocalTime now = LocalTime.now();
+            int hour = now.getHour();
+
+            if (hour < 12){
+        %>
+        Good Morning<br/>
+        <%
+            } else {
+        %>
+        Good Afternoon<br/>
+        <%
+            }
+        %>
+        Welcome to <%= application.getInitParameter("applicationName") %> Training PORTAL</h1>
+        <p>Empowering Developers with Real-World Skills</p>
+        <%!
+
+            public int addTotalSum(){
+                int totalSum = 0;
+                for (int x = 0; x< 20; x++)
+                    totalSum += x;
+
+                return totalSum;
+            }
+        %>
+        <p>
+        <%= addTotalSum() %>
+        </p>
     </header>
 
     <%-- Courses section --%>
@@ -78,14 +100,7 @@
         <p>Weekend Bootcamps: 9:00 AM - 1:00 PM</p>
     </section>
 
-    <!-- Navigation -->
-    <section>
-        <a href="./aboutus">Learn More About Us</a>
-    </section>
-
-    <section>
-        <a href="./login">Login</a>
-    </section>
+    <jsp:include page="footer.jsp" />
 
 </body>
 </html>

@@ -18,12 +18,14 @@ public class LoginFilter implements Filter {
         String defaultUri = httpRequest.getContextPath() + "/";
         String loginUri = httpRequest.getContextPath() + "/login";
         String indexUri = httpRequest.getContextPath() + "/index.jsp";
+        String contactUsUri = "contact_us";
         String pageRequestUri = httpRequest.getRequestURI();
         boolean loggedIn = session != null && session.getAttribute("SESSION_ID") != null;
 
         if(loggedIn || pageRequestUri.equalsIgnoreCase(loginUri)
                 || pageRequestUri.equalsIgnoreCase(defaultUri)
-                || pageRequestUri.equalsIgnoreCase(indexUri)){
+                || pageRequestUri.equalsIgnoreCase(indexUri)
+                || pageRequestUri.contains(contactUsUri)){
             filterChain.doFilter(servletRequest, servletResponse);
 
         } else {
