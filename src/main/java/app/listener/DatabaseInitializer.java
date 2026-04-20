@@ -1,68 +1,58 @@
 package app.listener;
 
 import app.database.DatabaseConnection;
+import app.model.Person;
+import app.model.School;
+import app.model.Trainer;
+import app.util.DatabaseUtils;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 @WebListener
 public class DatabaseInitializer implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        System.out.println("========================================");
-        System.out.println("Initializing Database Schema...");
-        System.out.println("========================================");
+        System.out.println("\n[SYSTEM] >>> Starting Application Lifecycle...");
+        System.out.println("###################################################");
+        System.out.println("#      COHORT 12 DATABASE INITIALIZATION  #");
+        System.out.println("###################################################");
 
-        try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement()) {
+        try (Connection conn = DatabaseConnection.getConnection()) {
 
-            // 1. Create Database if it doesn't exist
-            stmt.executeUpdate("CREATE DATABASE IF NOT EXISTS cohort12_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci");
-            System.out.println("Database 'cohort12_db' is ready.");
+            if (conn != null && !conn.isClosed()) {
+                System.out.println("[SUCCESS] Connected to MySQL successfully.");
 
-            // 2. Create Tables if they don't exist
-            String createPersons =
-                    "CREATE TABLE IF NOT EXISTS persons (" +
-                            "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                            "name VARCHAR(100) NOT NULL, " +
-                            "nationalId VARCHAR(50) UNIQUE" +
-                            ")";
+                // Dynamically create tables based on your Model files using Reflection
+                DatabaseUtils.createTableIfNotExists(conn, Person.class);
+                DatabaseUtils.createTableIfNotExists(conn, School.class);
+                DatabaseUtils.createTableIfNotExists(conn, Trainer.class);
 
-            String createSchools =
-                    "CREATE TABLE IF NOT EXISTS schools (" +
-                            "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                            "schoolName VARCHAR(100) NOT NULL, " +
-                            "schoolLocation VARCHAR(100)" +
-                            ")";
-
-            String createTrainers =
-                    "CREATE TABLE IF NOT EXISTS trainers (" +
-                            "id INT AUTO_INCREMENT PRIMARY KEY, " +
-                            "name VARCHAR(100) NOT NULL, " +
-                            "gender VARCHAR(20)" +
-                            ")";
-
-            stmt.executeUpdate(createPersons);
-            stmt.executeUpdate(createSchools);
-            stmt.executeUpdate(createTrainers);
-
-            System.out.println("All tables (persons, schools, trainers) are ready.");
+                System.out.println("[INFO] Reflection Engine: Schema sync completed.");
+                System.out.println("[STATUS] >>> APPLICATION IS READY TO GO! <<<");
+            }
 
         } catch (SQLException e) {
-            System.err.println("Database Initialization Failed!");
-            System.err.println("   Error: " + e.getMessage());
+            System.err.println("[ERROR] Database connection could not be established!");
+            System.err.println("Cause: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("[ERROR] An unexpected error occurred during startup:");
             e.printStackTrace();
         }
 
-        System.out.println("========================================\n");
+        System.out.println("###################################################\n");
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        System.out.println("Application shutting down.");
+        System.out.println("\n###################################################");
+        System.out.println("#      APPLICATION SHUTTING DOWN...               #");
+        System.out.println("###################################################");
+        System.out.println("[INFO] Closing resources and cleaning up threads.");
+        System.out.println("[STATUS] Database connections released. Goodbye!");
+        System.out.println("###################################################\n");
     }
 }

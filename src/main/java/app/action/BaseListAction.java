@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 
 public class BaseListAction<T> extends BaseAction<T> {
 
+    @Override
     @SuppressWarnings("unchecked")
     public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //if session exist use it, otherwise create a new one
