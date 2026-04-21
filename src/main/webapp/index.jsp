@@ -96,8 +96,8 @@
     <!-- Schedule -->
 
     <jsp:useBean id="weekdaySchedule" class="app.model.Schedule" />
-    <jsp:setProperty name="weekdaySchedule" property="scheduleType" value="Weekday Only Classes" />
-    <jsp:setProperty name="weekdaySchedule" property="scheduleTime" value="6:00 PM - 9:00 PM" />
+    <jsp:setProperty name="weekdaySchedule" property="scheduleType" />
+    <jsp:setProperty name="weekdaySchedule" property="scheduleTime" />
 
     <jsp:useBean id="weekendSchedule" class="app.model.Schedule" />
     <jsp:setProperty name="weekendSchedule" property="scheduleType" value="Weekend Only Bootcamps" />
