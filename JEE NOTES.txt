@@ -118,6 +118,21 @@ j) Jsp -  write java inside html
         <jsp:setProperty>
         <jsp:getProperty>
 
+    JSP EXPRESSIONS LANGUAGE (EL)
+        -to simplify data access of java beans and implicit objects
+        -arithmetic +,-,*, /, %
+            ${20/10} or ${beanName.number/beanName.number2}
+        -Logical and relation operators
+            == and eq
+            != and ne
+            < and lt
+            > and gt
+            >= and ge
+            <= and le
+
+    JSTL
+
+
 
 Convert Db session to RDBMS (MYSQL, POSTGRES..ORACLE)
 Make jdbc to be single...use ServletContextListener..
@@ -127,9 +142,13 @@ on startup
     3. Queries should also be generated dynamically
 
 
-
-
-
-
+CONTEXT DEPENDENCY INJECTION(CDI)
+JPA & JTA (INCLUDE BEAN VALIDATION)
+WEB SERVICES
+    -JAX-RS - REST
+    -JAX-WS - SOAP
+    -WEBSOCKET
+JMS
+JAKARTA SECURITY
 
 

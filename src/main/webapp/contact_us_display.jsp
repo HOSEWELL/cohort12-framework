@@ -1,7 +1,6 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <!DOCTYPE html>
 <html lang="en">
-<jsp:useBean id="contactUs" class="app.model.ContactUs" />
-<jsp:setProperty name="contactUs" property="*" />
 <head>
     <meta charset="UTF-8">
     <title>Message Sent</title>
@@ -59,13 +58,13 @@
 
 <div class="card">
     <h1>Thank You!</h1>
-        Name: <jsp:getProperty name="contactUs" property="name" /><br/>
-        Email: <jsp:getProperty name="contactUs" property="email" /><br/>
-        Subject: <jsp:getProperty name="contactUs" property="subject" /><br/>
-        Message: <jsp:getProperty name="contactUs" property="message" /><br/>
+        Name: ${param.name}<br/>
+        Email: ${param.email}<br/>
+        Subject: ${param.subject}<br/>
+        Message: ${param.message}<br/>
     <p>Your message has been successfully submitted. We will get back to you shortly.</p>
 
-    <a href="index.html" class="button">Back to Home</a>
+    <a href="index.jsp" class="button">Back to Home</a>
 </div>
 
 <jsp:include page="footer.jsp" />

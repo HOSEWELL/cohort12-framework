@@ -1,5 +1,8 @@
 package app.model;
 
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotNull;
+
 import java.io.Serializable;
 
 public class Schedule implements Serializable {

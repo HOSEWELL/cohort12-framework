@@ -1,7 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ page import="app.utility.Courses" %>
 <%@ page import="java.time.LocalTime" %>
-
 
 <%! Courses courses = new Courses(); %>
 <!DOCTYPE html>
@@ -52,8 +51,9 @@
         <%
             }
         %>
-        Welcome to <%= application.getInitParameter("applicationName") %> Training PORTAL</h1>
+        Welcome to ${applicationScope.applicationName} Training PORTAL</h1>
         <p>Empowering Developers with Real-World Skills</p>
+        SUM OF TWO NUMBER ${1+2}
         <%!
 
             public int addTotalSum(){
@@ -105,12 +105,10 @@
     <section>
         <h2>Upcoming Schedule</h2>
         <p>
-        <jsp:getProperty name="weekdaySchedule" property="scheduleType" />:
-        <jsp:getProperty name="weekdaySchedule" property="scheduleTime" />
+        ${weekdaySchedule.scheduleType} : ${weekdaySchedule.scheduleTime}
         </p>
         <p>
-        <jsp:getProperty name="weekendSchedule" property="scheduleType" />:
-        <jsp:getProperty name="weekendSchedule" property="scheduleTime" />
+        ${weekendSchedule.scheduleType} : ${weekendSchedule.scheduleTime}
         </p>
     </section>
 
