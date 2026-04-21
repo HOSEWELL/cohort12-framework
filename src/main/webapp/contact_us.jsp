@@ -86,7 +86,7 @@
         <p>Location: Nairobi, Kenya</p>
     </div>
 
-    <form action="./contact_us_submitted.jsp" method="post">
+    <form action="./contact_us_display.jsp" method="post">
         <input type="text" name="name" placeholder="Your Name" required>
         <input type="email" name="email" placeholder="Your Email" required>
         <input type="text" name="subject" placeholder="Subject">

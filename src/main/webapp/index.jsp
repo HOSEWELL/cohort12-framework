@@ -94,10 +94,24 @@
     </section>
 
     <!-- Schedule -->
+
+    <jsp:useBean id="weekdaySchedule" class="app.model.Schedule" />
+    <jsp:setProperty name="weekdaySchedule" property="scheduleType" value="Weekday Only Classes" />
+    <jsp:setProperty name="weekdaySchedule" property="scheduleTime" value="6:00 PM - 9:00 PM" />
+
+    <jsp:useBean id="weekendSchedule" class="app.model.Schedule" />
+    <jsp:setProperty name="weekendSchedule" property="scheduleType" value="Weekend Only Bootcamps" />
+    <jsp:setProperty name="weekendSchedule" property="scheduleTime" value="9:00 AM - 3:00 PM" />
     <section>
         <h2>Upcoming Schedule</h2>
-        <p>Weekday Classes: 6:00 PM - 8:00 PM</p>
-        <p>Weekend Bootcamps: 9:00 AM - 1:00 PM</p>
+        <p>
+        <jsp:getProperty name="weekdaySchedule" property="scheduleType" />:
+        <jsp:getProperty name="weekdaySchedule" property="scheduleTime" />
+        </p>
+        <p>
+        <jsp:getProperty name="weekendSchedule" property="scheduleType" />:
+        <jsp:getProperty name="weekendSchedule" property="scheduleTime" />
+        </p>
     </section>
 
     <jsp:include page="footer.jsp" />
