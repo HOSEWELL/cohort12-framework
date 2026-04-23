@@ -13,7 +13,7 @@ public class DataSourceHelper {
     private static final int PORT = 3306;
     private static final String DB_NAME = "training_app";
     private static final String USER = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "@h.k_rajah8";
 
     private DataSourceHelper() {}
 
