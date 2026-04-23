@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ page import="app.utility.Courses" %>
+<%@ page import="app.pages.Courses" %>
 <%@ page import="java.time.LocalTime" %>
 
 <%! Courses courses = new Courses(); %>
@@ -84,11 +84,11 @@
 
     <!-- Schedule -->
 
-    <jsp:useBean id="weekdaySchedule" class="app.model.Schedule" />
+    <jsp:useBean id="weekdaySchedule" class="app.pages.Schedule" />
     <jsp:setProperty name="weekdaySchedule" property="scheduleType" />
     <jsp:setProperty name="weekdaySchedule" property="scheduleTime" />
 
-    <jsp:useBean id="weekendSchedule" class="app.model.Schedule" />
+    <jsp:useBean id="weekendSchedule" class="app.pages.Schedule" />
     <jsp:setProperty name="weekendSchedule" property="scheduleType" value="Weekend Only Bootcamps" />
     <jsp:setProperty name="weekendSchedule" property="scheduleTime" value="9:00 AM - 3:00 PM" />
     <section>

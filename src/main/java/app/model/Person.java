@@ -1,12 +1,12 @@
 package app.model;
 
-import app.framework.Cohort12Form;
-import app.framework.Cohort12FormField;
-import app.framework.Cohort12Table;
-import app.framework.Cohort12TableCol;
+import app.framework.*;
 
 import java.io.Serializable;
 
+
+@PageMenuItem(label = "Registered Persons", url = "./person_lists")
+@DbTable(name = "persons")
 @Cohort12Form(label = "Person Register",
         actionUrl = "./register_person")
 @Cohort12Table(label = "Persons",
@@ -14,15 +14,28 @@ import java.io.Serializable;
         registerUrl = "./register_person")
 public class Person implements Serializable {
 
+    @DbColumn(name = "id", type = "INT", primaryKey = true, autoIncrement = true)
+    private int id;
+
+    @DbColumn(name = "name", type = "VARCHAR(255)")
     @Cohort12FormField(label = "Person Name",
         placeholder = "Please enter Person Name")
     @Cohort12TableCol(label = "Person Name")
     private String name;
 
+    @DbColumn(name = "national_id", type = "VARCHAR(100)")
     @Cohort12FormField(label = "National ID",
             placeholder = "Please enter ID")
     @Cohort12TableCol(label = "National ID")
     private String nationalId;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     private String address;
 

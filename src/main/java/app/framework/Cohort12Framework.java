@@ -1,9 +1,13 @@
 package app.framework;
 
+import app.utility.helper.ClassScanner;
+
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class Cohort12Framework {
 
@@ -29,6 +33,13 @@ public class Cohort12Framework {
 
         writer.println("<button type='submit'>Register</button>");
         writer.println("</form>");
+
+        if (clazz.isAnnotationPresent(Cohort12Table.class)) {
+            Cohort12Table cohort12Table = clazz.getAnnotation(Cohort12Table.class);
+            writer.println("<section>");
+            writer.println("<a href=\"" + cohort12Table.tableUrl() + "\">&larr; List Registered " + cohort12Table.label() + " </a>");
+            writer.println("</section>");
+        }
     }
 
     public static void htmlTable(PrintWriter writer, Class<?> clazz,
@@ -86,5 +97,17 @@ public class Cohort12Framework {
         writer.println("<a href=\"" + cohort12Table.registerUrl() + "\">&larr; Register " + cohort12Table.label() + " </a>");
         writer.println("</section>");
 
+    }
+
+    public static String generateMenuItem(){
+        Set<Class<?>> entities = ClassScanner.scanForDbTables("app.model");
+
+        return entities.stream()
+            .filter(clazz -> clazz.isAnnotationPresent(PageMenuItem.class))
+            .map(clazz -> {
+                PageMenuItem annotation = clazz.getAnnotation(PageMenuItem.class);
+                return "<a href='./" + annotation.url() + "'>" + annotation.label() + "</a>";
+            })
+            .collect(Collectors.joining("\n"));
     }
 }

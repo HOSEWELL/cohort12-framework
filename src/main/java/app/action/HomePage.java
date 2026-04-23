@@ -1,5 +1,6 @@
 package app.action;
 
+import app.framework.Cohort12Framework;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -64,9 +65,7 @@ public class HomePage extends HttpServlet {
         out.println("  <div class='logo'>MyApp</div>");
         out.println("  <div class='nav-links'>");
         out.println("      <a href='./home'>Home</a>");
-        out.println("      <a href='./register_school'>Register School</a>");
-        out.println("      <a href='./register_person'>Register Person</a>");
-        out.println("      <a href='./register_trainer'>Register Trainer</a>");
+        out.println(Cohort12Framework.generateMenuItem());
         out.println("  </div>");
         out.println("</div>");
 

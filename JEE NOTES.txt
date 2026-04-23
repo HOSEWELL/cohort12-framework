@@ -134,9 +134,9 @@ j) Jsp -  write java inside html
         collection of ready-made tags..that
         replaces scriptlets, makes jsp cleaner, readable
         Library
-            1. Core - Logic, Loops, Variables -- prefix c
-            2. Formatting - format dates, numbers etc fmt
-            3. Functions - prebuilt function..methods fn
+            1. Core - Logic, Loops, Variables -- prefix c *
+            2. Formatting - format dates, numbers etc fmt *
+            3. Functions - prebuilt function..methods fn *
 
 
             4. SQL prefix - sql
@@ -156,7 +156,6 @@ on startup
     1. System should create database automatically if it does not exist
     2. System should create table of models/entities automatically if the dont exist
     3. Queries should also be generated dynamically
-
 
 CONTEXT DEPENDENCY INJECTION(CDI)
 EJB
