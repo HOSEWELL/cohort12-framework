@@ -180,6 +180,12 @@ CONTEXT DEPENDENCY INJECTION(CDI)
         e) contextual instance - which an object created by
             the container from bean.
 
+    CDI CONTEXTS(SCOPE)
+    @ApplicationScope - one object/instance for the entire app
+    @RequestScope - new object/instance per request
+    @SessionScope - one object/instance per session
+    @Dependent - new object/instance per injection (@Inject)
+
 
 
 
