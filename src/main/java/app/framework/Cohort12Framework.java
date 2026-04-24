@@ -2,7 +2,6 @@ package app.framework;
 
 import app.utility.helper.ClassScanner;
 
-import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,50 +10,60 @@ import java.util.stream.Collectors;
 
 public class Cohort12Framework {
 
-    public static void htmlForm(PrintWriter writer, Class<?> clazz){
+    public static String htmlForm(Class<?> clazz){
 
         if (!clazz.isAnnotationPresent(Cohort12Form.class))
-            return;
+            return "";
 
         Cohort12Form formAnnot = clazz.getAnnotation(Cohort12Form.class);
 
-        writer.println("<h2>" + formAnnot.label() + "</h2>");
-        writer.println("<form method='" + formAnnot.method() + "' action='" + formAnnot.actionUrl() + "'>");
+        StringBuilder formBuilder = new StringBuilder();
+        formBuilder.append("<div class='card'>");
+        formBuilder.append("<h2>" + formAnnot.label() + "</h2>");
+        formBuilder.append("<form method='" + formAnnot.method() + "' action='" + formAnnot.actionUrl() + "'>");
 
+        formBuilder.append("<div class='form-group'>");
         for (Field field : clazz.getDeclaredFields()) {
             if (!field.isAnnotationPresent(Cohort12FormField.class))
                 continue;
 
             Cohort12FormField fieldInfo = field.getAnnotation(Cohort12FormField.class);
-            writer.println("<label>" + fieldInfo.label() + ":</label>");
-            writer.println("<input type='text' name='"
+            formBuilder.append("<label>" + fieldInfo.label() + ":</label>");
+            formBuilder.append("<input type='text' name='"
                 + (fieldInfo.name().isEmpty()? field.getName() : fieldInfo.name()) + "' placeholder='Enter " + fieldInfo.placeholder() + "' required />");
         }
+        formBuilder.append("</div>");
 
-        writer.println("<button type='submit'>Register</button>");
-        writer.println("</form>");
+        formBuilder.append("<button type='submit' class='btn'>Register</button>");
+        formBuilder.append("</form>");
 
         if (clazz.isAnnotationPresent(Cohort12Table.class)) {
             Cohort12Table cohort12Table = clazz.getAnnotation(Cohort12Table.class);
-            writer.println("<section>");
-            writer.println("<a href=\"" + cohort12Table.tableUrl() + "\">&larr; List Registered " + cohort12Table.label() + " </a>");
-            writer.println("</section>");
+            formBuilder.append("<a href=\"" + cohort12Table.tableUrl() + "\"  class='back-link'>&larr; List Registered " + cohort12Table.label() + " </a>");
         }
+
+        formBuilder.append("</div>");
+
+        return formBuilder.toString();
     }
 
-    public static void htmlTable(PrintWriter writer, Class<?> clazz,
+    public static String htmlTable(Class<?> clazz,
          List<?> tableData) {
 
         if (!clazz.isAnnotationPresent(Cohort12Table.class))
-            return;
+            return "";
 
         Cohort12Table cohort12Table = clazz.getAnnotation(Cohort12Table.class);
 
-        writer.println("<section>");
-        writer.println("<h2>" + cohort12Table.label() + " Registered</h2>");
-        writer.println("<p>");
+        StringBuilder tableBuilder = new StringBuilder();
 
-        writer.println("<table style='border-collapse: collapse; width: 50%; font-family: Arial, sans-serif;'>");
+        tableBuilder.append("<div class='container'>");
+        tableBuilder.append("<div class='card'>");
+        tableBuilder.append("<h2>")
+            .append(cohort12Table.label())
+            .append(" Registered</h2>");
+
+        tableBuilder.append("<table style='border-collapse: collapse; width: 50%; font-family: Arial, sans-serif;'>");
 
         List<String> fieldNames = new ArrayList<>();
         for (Field field : clazz.getDeclaredFields()) {
@@ -64,38 +73,34 @@ public class Cohort12Framework {
             fieldNames.add(field.getName());
         }
 
-        writer.println("<tr>");
-        for (String fieldName : fieldNames) {
-
-            // Header row
-            writer.println("<th style='border: 1px solid #000; padding: 8px; background-color: #f2f2f2;'>" + fieldName + "</th>");
-        }
-        writer.println("</tr>");
+        tableBuilder.append("<thead><tr>");
+        for (String fieldName : fieldNames)
+            tableBuilder.append("<th>").append(fieldName).append("</th>");
+        tableBuilder.append("</tr></thead>");
 
         for (Object data : tableData) {
-            writer.println("<tr>");
+            tableBuilder.append("<tr>");
             for (String fieldName : fieldNames) {
                 try {
                     Field field = data.getClass().getDeclaredField(fieldName);
                     field.setAccessible(true);
-                    writer.println("<td style='border: 1px solid #000; padding: 8px;'>"
+                    tableBuilder.append("<td style='border: 1px solid #000; padding: 8px;'>"
                             + field.get(data) + "</td>");
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
 
             }
-            writer.println("</tr>");
+            tableBuilder.append("</tr>");
         }
 
-        writer.println("</table>");
-        writer.println("</p>");
-        writer.println("</section>");
+        tableBuilder.append("</table>");
 
-// Navigation
-        writer.println("<section>");
-        writer.println("<a href=\"" + cohort12Table.registerUrl() + "\">&larr; Register " + cohort12Table.label() + " </a>");
-        writer.println("</section>");
+        tableBuilder.append("<a href=\"" + cohort12Table.registerUrl() + "\">&larr; Register " + cohort12Table.label() + " </a>");
+        tableBuilder.append("</div>");
+        tableBuilder.append("</div>");
+
+        return tableBuilder.toString();
 
     }
 
