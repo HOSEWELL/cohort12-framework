@@ -187,6 +187,26 @@ CONTEXT DEPENDENCY INJECTION(CDI)
     @Dependent - new object/instance per injection (@Inject)
 
 
+    QUALIFIERS
+
+    mpesa
+    card
+    bankTransfer
+
+
+    public class Contribution{
+
+        @Inject
+        @PesaPal
+        Payment payment;
+
+        public void procesPayment(BigDecimal amount) {
+            payment.process(amount);
+        }
+
+    }
+
+
 
 
 EJB

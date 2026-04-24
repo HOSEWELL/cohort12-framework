@@ -2,7 +2,7 @@ package app.utility.validation;
 
 import jakarta.enterprise.context.ApplicationScoped;
 
-@TrainerQualifier
+@ValidatorQualifier(ValidatorQualifier.ValidationChoice.TRAINER)
 @ApplicationScoped
 public class ValidateTrainer implements Validate {
     private int validationCounter = 0;

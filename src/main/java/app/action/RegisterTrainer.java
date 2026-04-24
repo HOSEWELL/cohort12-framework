@@ -1,9 +1,8 @@
 package app.action;
 
 import app.model.Trainer;
-import app.utility.validation.TrainerQualifier;
 import app.utility.validation.Validate;
-import app.utility.validation.ValidateTrainee;
+import app.utility.validation.ValidatorQualifier;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebInitParam;
@@ -22,7 +21,7 @@ import java.io.IOException;
 public class RegisterTrainer extends BaseAction<Trainer> {
 
         @Inject
-        @TrainerQualifier
+        @ValidatorQualifier(ValidatorQualifier.ValidationChoice.TRAINER)
         public Validate validate;
 
         public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

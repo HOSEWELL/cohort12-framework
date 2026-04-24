@@ -4,7 +4,7 @@ package app.utility.validation;
 import jakarta.enterprise.context.ApplicationScoped;
 
 
-@TraineeQualifier
+@ValidatorQualifier(ValidatorQualifier.ValidationChoice.TRAINEE)
 @ApplicationScoped
 public class ValidateTrainee implements Validate{
     private int validationCounter = 0;
