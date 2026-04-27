@@ -1,6 +1,8 @@
 package app.utility.validation;
 
-public interface Validate {
+public interface Validate<T> {
 
-    boolean name(String name);
+    void printValidation();
+
+    boolean process(T model);
 }

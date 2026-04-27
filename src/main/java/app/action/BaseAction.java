@@ -5,6 +5,7 @@ import app.framework.Cohort12Framework;
 import app.framework.Cohort12Table;
 import app.framework.GenericDao;
 import app.framework.PageContent;
+import jakarta.inject.Inject;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
@@ -15,10 +16,7 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.apache.commons.beanutils.converters.BigDecimalConverter;
-
-
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
@@ -29,6 +27,9 @@ import java.util.List;
 import java.util.Map;
 
 public class BaseAction<T> extends HttpServlet {
+
+    @Inject
+    protected Cohort12Framework framework;
 
     GenericDao<T, Integer> genericDao = new GenericDao<>(this.getType());
 
@@ -94,7 +95,7 @@ public class BaseAction<T> extends HttpServlet {
         throws ServletException, IOException{
 
         request.setAttribute(PageContent.CONTENT.name(),
-                Cohort12Framework.htmlForm(this.getType()));
+                framework.htmlForm(this.getType()));
         RequestDispatcher rd = request.getRequestDispatcher("./app_page");
         rd.include(request, response);
 

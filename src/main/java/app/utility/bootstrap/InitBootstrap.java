@@ -1,4 +1,4 @@
-package app.utility.validation;
+package app.utility.bootstrap;
 
 import jakarta.inject.Qualifier;
 
@@ -10,12 +10,5 @@ import java.lang.annotation.Target;
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.TYPE})
-public @interface ValidatorQualifier {
-
-    ValidationChoice value();
-
-    enum ValidationChoice {
-        TRAINEE, TRAINER, COURSE, SCHOOL
-    }
-
+public @interface InitBootstrap {
 }

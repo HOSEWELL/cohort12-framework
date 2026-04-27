@@ -1,58 +1,26 @@
 package app.listeners;
 
 
-import app.utility.helper.ClassScanner;
-import app.utility.db.DataSourceHelper;
-import app.utility.db.TableGenerator;
+import app.utility.bootstrap.Bootstrap;
+import jakarta.enterprise.inject.Any;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 
-import javax.sql.DataSource;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
-import java.util.Set;
-
 @WebListener
 public class AppContextListener implements ServletContextListener {
 
+    @Inject
+    @Any
+    private Instance<Bootstrap> bootstraps;
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-
-        try {
-            createDatabaseIfNotExists();
-
-            DataSource ds = DataSourceHelper.getDataSource();
-
-            Set<Class<?>> entities =
-                    ClassScanner.scanForDbTables("app.model");
-
-            TableGenerator.generateTables(ds, entities);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void createDatabaseIfNotExists() {
-
-        try (Connection conn = DriverManager.getConnection(
-                DataSourceHelper.getBaseUrlWithoutDB(),
-                DataSourceHelper.getUser(),
-                DataSourceHelper.getPassword());
-             Statement stmt = conn.createStatement()) {
-
-            String sql = "CREATE DATABASE IF NOT EXISTS "
-                    + DataSourceHelper.getDbName();
-
-            stmt.executeUpdate(sql);
-
-            System.out.println("Database ensured.");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println("whats happening...");
+        for (Bootstrap bootstrap : bootstraps)
+            bootstrap.process();
     }
 
     @Override

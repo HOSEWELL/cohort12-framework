@@ -22,12 +22,12 @@ public class RegisterSchool extends BaseAction<School> {
 
     @Inject
     @ValidatorQualifier(ValidatorQualifier.ValidationChoice.SCHOOL)
-    public Validate validate;
+    public Validate<School> validate;
 
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         School school = super.serializeForm(req.getParameterMap());
-        if (validate.name(school.getSchoolName()))
+        if (validate.process(school))
             super.doPost(req, resp);
         else
             resp.sendRedirect("./school_lists");

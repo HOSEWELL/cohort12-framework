@@ -2,6 +2,7 @@ package app.action;
 
 import app.model.Trainer;
 import app.utility.validation.Validate;
+import app.utility.validation.ValidateNationality;
 import app.utility.validation.ValidatorQualifier;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
@@ -22,11 +23,11 @@ public class RegisterTrainer extends BaseAction<Trainer> {
 
         @Inject
         @ValidatorQualifier(ValidatorQualifier.ValidationChoice.TRAINER)
-        public Validate validate;
+        public Validate<Trainer> validate;
 
         public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
                 Trainer trainer = super.serializeForm(req.getParameterMap());
-                if (validate.name(trainer.getName()))
+                if (validate.process(trainer))
                         super.doPost(req, resp);
                 else
                         resp.sendRedirect("./trainer_lists");

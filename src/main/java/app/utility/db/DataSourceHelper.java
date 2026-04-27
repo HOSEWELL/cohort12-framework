@@ -1,10 +1,14 @@
 package app.utility.db;
 
+import app.utility.bootstrap.InitBootstrap;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import javax.sql.DataSource;
 
+@InitBootstrap
+@ApplicationScoped
 public class DataSourceHelper {
 
     private static HikariDataSource dataSource;

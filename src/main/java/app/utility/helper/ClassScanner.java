@@ -2,14 +2,17 @@ package app.utility.helper;
 
 import app.framework.DbTable;
 import app.framework.PageMenuItem;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Dependent;
 import org.reflections.Reflections;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@Dependent
 public class ClassScanner {
 
-    public static Set<Class<?>> scanForDbTables(String basePackage) {
+    public Set<Class<?>> scanForDbTables(String basePackage) {
 
         Reflections reflections = new Reflections(basePackage);
 
@@ -19,9 +22,7 @@ public class ClassScanner {
         return new HashSet<>(annotatedClasses);
     }
 
-
-
-    public static Set<Class<?>> scanForMenuItem(String basePackage) {
+    public Set<Class<?>> scanForMenuItem(String basePackage) {
 
         Reflections reflections = new Reflections(basePackage);
 

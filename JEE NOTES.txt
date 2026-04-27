@@ -188,25 +188,20 @@ CONTEXT DEPENDENCY INJECTION(CDI)
 
 
     QUALIFIERS
+        - Injection Points
+            -Fields
+            -Constructor ---- assignment
+            -Setter Method --- assignment
+        -Multiple qualifiers
 
-    mpesa
-    card
-    bankTransfer
+        -Built in qualifiers
+            -@Named
+                -Constructor ---- assignment
+                -Setter Method --- assignment
+            -@Default
+            -@Any
 
-
-    public class Contribution{
-
-        @Inject
-        @PesaPal
-        Payment payment;
-
-        public void procesPayment(BigDecimal amount) {
-            payment.process(amount);
-        }
-
-    }
-
-
+        -also inject datasource ---------assignment
 
 
 EJB
@@ -217,5 +212,25 @@ WEB SERVICES
     -WEBSOCKET
 JMS
 JAKARTA SECURITY
+
+PROJECT STRUCTURE
+
+ACTION(url/web servlet)    REST-Endpoints   Soap-Endpoints
+        |                       |               |
+        |                       |               |
+---------------------------------------------------------
+                        |
+                        |
+  Business Logic(EJBs - CDIs) - no db connection(access data through DAO)
+                        |
+                        |
+                 Data Access Objects (DAO) EM(Entity Manager)
+                        |
+                        |
+                   Model (Entity) JPA
+                        |
+                        | ORM (Object relation mapping)
+                        |
+                     Database
 
 
