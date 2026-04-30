@@ -25,5 +25,5 @@ public class DbParamsProducer {
 
     @Named("dbParamPwd")
     @Produces
-    private String dbParamPwd = "";
+    private String dbParamPwd = "@h.k_rajah8";
 }
