@@ -1,9 +1,10 @@
-package app.framework;
+package app.dao;
 
 
+import app.framework.DbColumn;
+import app.framework.DbTable;
 import app.utility.db.DataSourceHelper;
 
-import javax.sql.DataSource;
 import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.*;
@@ -15,11 +16,10 @@ public class GenericDao<T, ID> {
     private final List<Field> columns = new ArrayList<>();
     private Field idField;
 
-    private final DataSource ds;
+    private DataSourceHelper ds;
 
     public GenericDao(Class<T> entityClass) {
         this.entityClass = entityClass;
-        this.ds = DataSourceHelper.getDataSource();
 
         if (!entityClass.isAnnotationPresent(DbTable.class)) {
             throw new RuntimeException("Missing @DbTable on " + entityClass.getName());
@@ -89,8 +89,7 @@ public class GenericDao<T, ID> {
 
             String idColumn = idField.getAnnotation(DbColumn.class).name();
 
-            String sql = "SELECT * FROM " + tableName +
-                    " WHERE " + idColumn + " = ?";
+            String sql = "SELECT * FROM " + tableName + " WHERE " + idColumn + " = ?";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setObject(1, id);
@@ -182,8 +181,7 @@ public class GenericDao<T, ID> {
 
             String idColumn = idField.getAnnotation(DbColumn.class).name();
 
-            String sql = "DELETE FROM " + tableName +
-                    " WHERE " + idColumn + "=?";
+            String sql = "DELETE FROM " + tableName + " WHERE " + idColumn + "=?";
 
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setObject(1, id);
@@ -210,5 +208,13 @@ public class GenericDao<T, ID> {
         }
 
         return instance;
+    }
+
+    public DataSourceHelper getDs() {
+        return ds;
+    }
+
+    public void setDs(DataSourceHelper ds) {
+        this.ds = ds;
     }
 }

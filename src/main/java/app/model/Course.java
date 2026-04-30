@@ -22,6 +22,10 @@ public class Course implements Serializable {
     @Cohort12TableCol(label = "Course Name")
     private String name;
 
+    @Cohort12FormField(label = "School Name",
+        placeholder = "Please enter School Name")
+    private String schoolName;
+
     public int getId() {
         return id;
     }
@@ -36,5 +40,13 @@ public class Course implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSchoolName() {
+        return schoolName;
+    }
+
+    public void setSchoolName(String schoolName) {
+        this.schoolName = schoolName;
     }
 }

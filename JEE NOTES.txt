@@ -196,15 +196,55 @@ CONTEXT DEPENDENCY INJECTION(CDI)
 
         -Built in qualifiers
             -@Named
-                -Constructor ---- assignment
-                -Setter Method --- assignment
+                -Constructor ---- assignment.
+                -Setter Method --- assignment.
             -@Default
             -@Any
+            -@Alternatives -- assignment.
 
         -also inject datasource ---------assignment
 
+    PRODUCER
+        @Produces tells CDI container...that whenever
+        someone injects this class, use this method/logic
+        to create the instance.
 
-EJB
+        CDI Container normally create instance on its
+        own way on injections...producers use my provide
+        method to create that instance and not your own
+        way.
+
+        Ways of using producer
+            -customize how contextual instance is created.
+            -use for object that cannot
+                directly be instantiated int, String,
+                CalculateAge
+
+POJO - Plain Old Java Object
+JavaBeans
+    - No arg constructors
+    - private properties with mutators and accessors
+    - Serializable - save object, transfer
+
+JEE -
+    EJB - Enterprise Java Beans
+
+    KEY CONCEPTS
+    TYPES OF BEANS
+        -Session Bean
+            -Stateless - the client does not keep track the
+                state of the instance...EJB can be inject
+                with annotation @EJB..that object/class
+                that injects that EJB is called client..
+                a client another EJB, Servlet and a
+                managed Bean...
+            -Stateful
+            -Singleton
+        -Message Driven
+
+
+
+
 JPA & JTA (INCLUDE BEAN VALIDATION)
 WEB SERVICES
     -JAX-RS - REST

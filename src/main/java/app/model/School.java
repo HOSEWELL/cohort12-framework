@@ -29,6 +29,12 @@ public class School implements Serializable {
     @Cohort12TableCol(label = "School Location")
     private String schoolLocation;
 
+    public School(){}
+
+    public School(String schoolName){
+        this.schoolName = schoolName;
+    }
+
     public int getId() {
         return id;
     }

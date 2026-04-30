@@ -1,9 +1,36 @@
 package app.action;
 
+import app.bean.SchoolBean;
+import app.bean.TraineeBean;
+import app.dao.TraineeDao;
+import app.dao.GenericDao;
+import app.framework.PageContent;
+import app.model.School;
 import app.model.Trainee;
+import jakarta.ejb.EJB;
+import jakarta.inject.Inject;
+import jakarta.servlet.RequestDispatcher;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
 
 @WebServlet("/trainee_lists")
-public class ListTrainee extends BaseListAction<Trainee> {
+public class ListTrainee extends BaseAction<Trainee> {
+
+    @EJB
+    private TraineeBean traineeBean;
+
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        request.setAttribute(PageContent.CONTENT.name(),
+                super.framework.htmlTable(getType(),
+                        traineeBean.list(new Trainee())));
+        RequestDispatcher rd = request.getRequestDispatcher("./app_page");
+        rd.include(request, response);
+    }
 
 }

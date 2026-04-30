@@ -3,7 +3,6 @@ package app.utility.db;
 import app.framework.DbColumn;
 import app.framework.DbTable;
 
-import javax.sql.DataSource;
 import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -13,7 +12,7 @@ import java.util.Set;
 
 public class TableGenerator {
 
-    public static void generateTables(DataSource ds, Set<Class<?>> entityClasses) {
+    public static void generateTables(Connection conn, Set<Class<?>> entityClasses) {
         for (Class<?> clazz : entityClasses) {
 
             if (!clazz.isAnnotationPresent(DbTable.class)) continue;
@@ -50,13 +49,12 @@ public class TableGenerator {
             String sql = "CREATE TABLE IF NOT EXISTS " + tableName +
                     " (" + String.join(", ", columns) + ")";
 
-            execute(ds, sql);
+            execute(conn, sql);
         }
     }
 
-    private static void execute(DataSource ds, String sql) {
-        try (Connection conn = ds.getConnection();
-             Statement stmt = conn.createStatement()) {
+    private static void execute(Connection conn, String sql) {
+        try (Statement stmt = conn.createStatement()) {
 
             stmt.executeUpdate(sql);
             System.out.println("Executed: " + sql);

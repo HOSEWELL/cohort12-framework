@@ -1,9 +1,13 @@
 package app.action;
 
+import app.bean.TraineeBean;
+import app.bean.TrainerBean;
+import app.dao.TrainerDao;
+import app.dao.GenericDao;
 import app.model.Trainer;
 import app.utility.validation.Validate;
-import app.utility.validation.ValidateNationality;
 import app.utility.validation.ValidatorQualifier;
+import jakarta.ejb.EJB;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebInitParam;
@@ -21,13 +25,12 @@ import java.io.IOException;
         })
 public class RegisterTrainer extends BaseAction<Trainer> {
 
-        @Inject
-        @ValidatorQualifier(ValidatorQualifier.ValidationChoice.TRAINER)
-        public Validate<Trainer> validate;
+        @EJB
+        private TrainerBean trainerBean;
 
         public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-                Trainer trainer = super.serializeForm(req.getParameterMap());
-                if (validate.process(trainer))
+
+                if (trainerBean.save(super.serializeForm(req.getParameterMap())))
                         super.doPost(req, resp);
                 else
                         resp.sendRedirect("./trainer_lists");

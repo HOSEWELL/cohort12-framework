@@ -4,36 +4,52 @@ import app.utility.bootstrap.InitBootstrap;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 @InitBootstrap
 @ApplicationScoped
 public class DataSourceHelper {
 
-    private static HikariDataSource dataSource;
+    private static volatile HikariDataSource dataSource;
 
-    private static final String HOST = "localhost";
-    private static final int PORT = 3306;
-    private static final String DB_NAME = "training_app";
-    private static final String USER = "root";
-    private static final String PASSWORD = "@h.k_rajah8";
+    @Inject
+    @Named("dbParamHost")
+    private String dbParamHost;
 
-    private DataSourceHelper() {}
+    @Inject
+    @Named("dbParamPort")
+    private int dbParamPort;
 
-    public static DataSource getDataSource() {
+    @Inject
+    @Named("dbParamName")
+    private String dbParamName;
+
+    @Inject
+    @Named("dbParamUser")
+    private String dbParamUser;
+
+    @Inject
+    @Named("dbParamPwd")
+    private String dbParamPwd;
+
+    public DataSource getDataSource() {
         if (dataSource == null) {
             synchronized (DataSourceHelper.class) {
                 if (dataSource == null) {
                     HikariConfig config = new HikariConfig();
 
                     config.setJdbcUrl(
-                        "jdbc:mysql://" + HOST + ":" + PORT + "/" + DB_NAME +
+                        "jdbc:mysql://" + dbParamHost + ":" + dbParamPort + "/" + dbParamName +
                         "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
                     );
 
-                    config.setUsername(USER);
-                    config.setPassword(PASSWORD);
+                    config.setUsername(dbParamUser);
+                    config.setPassword(dbParamPwd);
 
                     config.setMaximumPoolSize(10);
                     config.setMinimumIdle(2);
@@ -46,20 +62,24 @@ public class DataSourceHelper {
         return dataSource;
     }
 
-    public static String getBaseUrlWithoutDB() {
-        return "jdbc:mysql://" + HOST + ":" + PORT +
+    public Connection getConnection() throws SQLException {
+        return this.getDataSource().getConnection();
+    }
+
+    public String getBaseUrlWithoutDB() {
+        return "jdbc:mysql://" + dbParamHost + ":" + dbParamPort +
            "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     }
 
-    public static String getDbName() {
-        return DB_NAME;
+    public String getDbName() {
+        return dbParamName;
     }
 
-    public static String getUser() {
-        return USER;
+    public String getUser() {
+        return dbParamUser;
     }
 
-    public static String getPassword() {
-        return PASSWORD;
+    public String getPassword() {
+        return dbParamPwd;
     }
 }
