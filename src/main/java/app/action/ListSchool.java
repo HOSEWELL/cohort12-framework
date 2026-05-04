@@ -1,9 +1,7 @@
 package app.action;
 
-import app.bean.CourseBean;
 import app.bean.SchoolBean;
 import app.framework.PageContent;
-import app.model.Course;
 import app.model.School;
 import jakarta.ejb.EJB;
 import jakarta.servlet.RequestDispatcher;

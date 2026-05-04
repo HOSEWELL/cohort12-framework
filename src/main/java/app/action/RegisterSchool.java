@@ -1,14 +1,8 @@
 package app.action;
 
-import app.bean.CourseBean;
 import app.bean.SchoolBean;
-import app.dao.SchoolDao;
-import app.dao.GenericDao;
 import app.model.School;
-import app.utility.validation.Validate;
-import app.utility.validation.ValidatorQualifier;
 import jakarta.ejb.EJB;
-import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebInitParam;
 import jakarta.servlet.annotation.WebServlet;

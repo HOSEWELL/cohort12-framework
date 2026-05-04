@@ -1,13 +1,8 @@
 package app.action;
 
 import app.bean.CourseBean;
-import app.dao.CourseDao;
-import app.dao.GenericDao;
 import app.model.Course;
-import app.utility.validation.Validate;
 import jakarta.ejb.EJB;
-import jakarta.inject.Inject;
-import jakarta.inject.Named;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,10 +1,11 @@
 package app.bean;
 
 import app.dao.SchoolDao;
-import app.model.Course;
+import app.model.AuditTrail;
 import app.model.School;
 import app.utility.validation.Validate;
 import app.utility.validation.ValidatorQualifier;
+import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 
@@ -12,6 +13,9 @@ import java.util.List;
 
 @Stateless
 public class SchoolBean {
+
+    @EJB
+    private AuditTrailBean auditTrailBean;
 
     @Inject
     private SchoolDao schoolDao;
@@ -22,6 +26,8 @@ public class SchoolBean {
 
     public boolean save(School school){
         if (validate.process(school)) {
+            auditTrailBean.save(new AuditTrail("Creating school: "
+                + school.getSchoolName()));
             schoolDao.save(school);
             return true;
         }

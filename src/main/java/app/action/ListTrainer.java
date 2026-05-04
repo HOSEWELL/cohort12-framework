@@ -1,14 +1,9 @@
 package app.action;
 
-import app.bean.TraineeBean;
 import app.bean.TrainerBean;
-import app.dao.TrainerDao;
-import app.dao.GenericDao;
 import app.framework.PageContent;
-import app.model.Trainee;
 import app.model.Trainer;
 import jakarta.ejb.EJB;
-import jakarta.inject.Inject;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;

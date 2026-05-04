@@ -240,6 +240,7 @@ JEE -
                 managed Bean...
             -Stateful
             -Singleton
+
         -Message Driven
 
 
