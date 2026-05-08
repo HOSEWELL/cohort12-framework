@@ -241,9 +241,33 @@ JEE -
             -Stateful
             -Singleton
 
-        -Message Driven
+        -Message Driven Bean (MDB) - JMS (Java Messaging Services)
+            -one system sends message
+            -another system receives it(later, or when back online)
+            -both systems dont need to be online at the same time.
 
+            CORE CONCEPTS OF JMS
+                - Producer(Sender) - application that sends the message
+                - Consumer(Receiver) - application that receives/consumes
+                - Message - data, text, json object.
+                - Queue - organize message for process, in point-to-point
+                - Topic - One sender - Many receivers( subscribers)
+                        - All subscribers get the message when
 
+            Observer same app, one system..system A
+
+            MDB - System A (cohort12)
+                ACTIVE MQ
+                 System B (BackSystem) MDB
+
+            set up activeMq in wildfly
+                -configure standalone-full.xml with a Queue under
+                    <subsystem xmlns="urn:jboss:domain:messaging-activemq:16.0">
+                     add
+                <jms-queue name="TrainingAppQueue" entries="java:/jms/queue/TrainingAppQueue"/>
+
+                - start wildfly with standalone-full.xml
+                    ./standalone.sh -c standalone-full.xml
 
 
 JPA & JTA (INCLUDE BEAN VALIDATION)
