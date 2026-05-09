@@ -5,7 +5,6 @@ import app.utility.db.TableGenerator;
 import app.utility.helper.ClassScanner;
 import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -41,7 +40,7 @@ public class DatabaseBootstrap implements Bootstrap {
         try (Connection conn = ds.getConnection();
              Statement stmt = conn.createStatement()) {
 
-            String sql = "CREATE DATABASE IF NOT EXISTS " + ds.getDbName();
+            String sql = "CREATE DATABASE IF NOT EXISTS training_app";
 
             stmt.executeUpdate(sql);
 

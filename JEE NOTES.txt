@@ -254,6 +254,10 @@ JEE -
                 - Topic - One sender - Many receivers( subscribers)
                         - All subscribers get the message when
 
+                Key difference (quick clarity)
+                    Queue → Point-to-point (1 consumer gets the message)
+                    Topic → Publish/Subscribe (multiple subscribers get the message)
+
             Observer same app, one system..system A
 
             MDB - System A (cohort12)
@@ -269,13 +273,13 @@ JEE -
                 - start wildfly with standalone-full.xml
                     ./standalone.sh -c standalone-full.xml
 
-
 JPA & JTA (INCLUDE BEAN VALIDATION)
+
 WEB SERVICES
     -JAX-RS - REST
     -JAX-WS - SOAP
     -WEBSOCKET
-JMS
+JMS * done *
 JAKARTA SECURITY
 
 PROJECT STRUCTURE
