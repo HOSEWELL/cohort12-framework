@@ -4,23 +4,25 @@ import app.framework.*;
 
 import java.io.Serializable;
 
-@DbTable(name = "courses")
-@Cohort12Form(label = "Course Register", actionUrl = "course/save")
-@Cohort12Table(label = "Courses", addLink = "course/add", deleteLink = "course/delete")
-public class Course implements Serializable {
+@DbTable(name = "campuses")
+@Cohort12Form(label = "Register Campus", actionUrl = Campus.DOMAIN_NAME + "/save")
+@Cohort12Table(label = "Campus", addLink = Campus.DOMAIN_NAME + "/add", deleteLink = Campus.DOMAIN_NAME + "/delete")
+public class Campus implements Serializable {
+
+    public static final String DOMAIN_NAME = "campus";
 
     @DbColumn(name = "id", type = "INT", primaryKey = true, autoIncrement = true)
     private int id;
 
     @DbColumn(name = "name", type = "VARCHAR(255)")
-    @Cohort12FormField(label = "Course Name",
-        placeholder = "Please enter Course Name")
-    @Cohort12TableCol(label = "Course Name")
+    @Cohort12FormField(label = "Campus Name",
+            placeholder = "Please enter campus Name")
+    @Cohort12TableCol(label = "Campus Name")
     private String name;
 
     @DbColumn(name = "school_name", type = "VARCHAR(255)")
     @Cohort12FormField(label = "School Name",
-        placeholder = "Please enter School Name", select = "school")
+            placeholder = "Please enter School Name", select = "school")
     private String schoolName;
 
     public int getId() {

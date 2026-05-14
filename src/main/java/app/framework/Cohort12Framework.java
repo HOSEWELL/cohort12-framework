@@ -1,15 +1,12 @@
 package app.framework;
 
 import app.utility.helper.ClassScanner;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.inject.Named;
-import jdk.jfr.Name;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -18,6 +15,13 @@ public class Cohort12Framework {
     @Inject
     private ClassScanner clazzScanner;
 
+    private Map<String, List<SelectBox>> formSelections = new HashMap<>();
+
+    @PostConstruct
+    public void init() {
+        System.out.println("****************Cohort12Framework Contextual Instance created ********");
+        resetFormSelections();
+    }
 
     public String htmlForm(Class<?> clazz){
 
@@ -29,8 +33,11 @@ public class Cohort12Framework {
         StringBuilder formBuilder = new StringBuilder();
         formBuilder.append("<div class='container'>");
         formBuilder.append("<div class='card'>");
-        formBuilder.append("<h2>").append(formAnnot.label()).append("</h2>");
-        formBuilder.append("<form method='").append(formAnnot.method()).append("' action='").append(formAnnot.actionUrl()).append("'>");
+        formBuilder.append("<h2>").append(formAnnot.label().toUpperCase()).append("</h2><br/><br/>");
+        formBuilder.append("<form method='").append(formAnnot.method())
+            .append("' action='")
+            .append(ActionMap.APP_PATH)
+            .append(formAnnot.actionUrl()).append("'>");
 
         formBuilder.append("<div class='form-group'>");
         for (Field field : clazz.getDeclaredFields()) {
@@ -39,19 +46,32 @@ public class Cohort12Framework {
 
             Cohort12FormField fieldInfo = field.getAnnotation(Cohort12FormField.class);
             formBuilder.append("<label>").append(fieldInfo.label()).append(":</label>");
-            formBuilder.append("<input type='text' name='").append(fieldInfo.name().isEmpty() ? field.getName() : fieldInfo.name()).append("' placeholder='Enter ").append(fieldInfo.placeholder()).append("' required />");
+            if (!fieldInfo.select().equalsIgnoreCase("")
+                && formSelections.containsKey(fieldInfo.select())) {
+                    formBuilder.append("<select name='country' required>");
+
+                    formSelections.get(fieldInfo.select()).forEach(formSelection ->
+                        formBuilder.append("<option value='").append(formSelection.getValue()).append("'>")
+                        .append(formSelection.getName()).append("</option>"));
+
+                formBuilder.append("</select>");
+
+            } else {
+                formBuilder.append("<input type='text' name='")
+                    .append(fieldInfo.name().isEmpty() ? field.getName() : fieldInfo.name())
+                    .append("' placeholder='Enter ")
+                    .append(fieldInfo.placeholder())
+                    .append("' required />");
+            }
         }
+
+        //reset form selection
+        resetFormSelections();
+
         formBuilder.append("</div>");
 
         formBuilder.append("<button type='submit' class='btn'>Register</button>");
         formBuilder.append("</form>");
-
-        if (clazz.isAnnotationPresent(Cohort12Table.class)) {
-            Cohort12Table cohort12Table = clazz.getAnnotation(Cohort12Table.class);
-            formBuilder.append("<a href=\"")
-                .append(cohort12Table.tableUrl())
-                .append("\"  class='back-link'>&larr; List Registered ").append(cohort12Table.label()).append(" </a>");
-        }
 
         formBuilder.append("</div>");
         formBuilder.append("</div>");
@@ -59,8 +79,7 @@ public class Cohort12Framework {
         return formBuilder.toString();
     }
 
-    public String htmlTable(Class<?> clazz,
-         List<?> tableData) {
+    public String htmlTable(Class<?> clazz, List<?> tableData) {
 
         if (!clazz.isAnnotationPresent(Cohort12Table.class))
             return "";
@@ -74,6 +93,13 @@ public class Cohort12Framework {
         tableBuilder.append("<h2>")
             .append(cohort12Table.label())
             .append(" Registered</h2>");
+
+        if (!cohort12Table.addLink().equalsIgnoreCase(""))
+            tableBuilder.append("<a href=\"")
+                .append(ActionMap.APP_PATH)
+                .append(cohort12Table.addLink())
+                .append("\" class='back-link'>&#43; Register ")
+                .append(cohort12Table.label()).append(" </a>");
 
         tableBuilder.append("<table>");
 
@@ -137,7 +163,10 @@ public class Cohort12Framework {
                 tableBuilder.append("</a>");
 
                 /* DELETE BUTTON */
-                tableBuilder.append("<a href='./delete_trainer?id=")
+                tableBuilder.append("<a href='")
+                    .append(ActionMap.APP_PATH)
+                    .append(cohort12Table.deleteLink())
+                    .append("/")
                     .append(idField.get(data))
                     .append("' class='icon-btn delete-btn' title='Delete' onclick='return confirm(\"Delete this trainer?\")'>");
                 tableBuilder.append("<i class='fa-solid fa-trash'></i>");
@@ -155,10 +184,6 @@ public class Cohort12Framework {
         tableBuilder.append("</tbody>");
         tableBuilder.append("</table>");
 
-        tableBuilder.append("<a href=\"")
-            .append(cohort12Table.registerUrl())
-            .append("\" class='back-link'>&larr; Register ")
-            .append(cohort12Table.label()).append(" </a>");
         tableBuilder.append("</div>");
         tableBuilder.append("</div>");
 
@@ -167,14 +192,41 @@ public class Cohort12Framework {
     }
 
     public String generateMenuItem(){
-        Set<Class<?>> entities = clazzScanner.scanForMenuItem("app.model");
-
-        return entities.stream()
-            .filter(clazz -> clazz.isAnnotationPresent(PageMenuItem.class))
-            .map(clazz -> {
-                PageMenuItem annotation = clazz.getAnnotation(PageMenuItem.class);
-                return "<a href='./" + annotation.url() + "'>" + annotation.label() + "</a>";
-            })
+        return ClassScanner.scanForAction("app.action").stream()
+            .map(clazz -> clazz.getAnnotation(Action.class))
+            .filter(Objects::nonNull)
+            .filter(Action::showLink)
+            .sorted(Comparator.comparingInt(Action::linkPosition))
+            .map(annotation -> "<a href='" + ActionMap.APP_PATH + annotation.value() + "/" + annotation.pageLink() + "'>"
+                    + annotation.label() + "</a>")
             .collect(Collectors.joining("\n"));
     }
+
+    public Map<String, List<SelectBox>> getFormSelections() {
+        return formSelections;
+    }
+
+    public void setFormSelections(Map<String, List<SelectBox>> formSelections) {
+        this.formSelections = formSelections;
+    }
+
+    public void resetFormSelections(){
+        formSelections = new HashMap<>();
+        List<SelectBox> genderSelections = new ArrayList<>();
+        genderSelections.add(SelectBox.builder()
+                .value("Male")
+                .name("Male")
+                .build());
+        genderSelections.add(SelectBox.builder()
+                .value("Female")
+                .name("Female")
+                .build());
+        genderSelections.add(SelectBox.builder()
+                .value("Non-Binary")
+                .name("Non-Binary")
+                .build());
+
+        formSelections.put("gender", genderSelections);
+    }
+
 }

@@ -93,22 +93,17 @@ public class LoginPage extends HttpServlet {
         if  (password == null)
             password = "";
 
-        System.out.println("submitted: " + username + " && " + password);
-
         String usernameConfig = config.getInitParameter("username");
         String passwordConfig = config.getInitParameter("password");
-        System.out.println("configs: username - " + usernameConfig);
-        System.out.println("configs: password - " + passwordConfig);
 
         if(username.equalsIgnoreCase(usernameConfig)
                 && password.equalsIgnoreCase(passwordConfig)){
             //you must create new session
             HttpSession session = request.getSession(true);
             session.setAttribute("UserActualName", "Mike Bavon");
-            System.out.println("session.getId(): " + session.getId());
             session.setAttribute("SESSION_ID", session.getId());
 
-            response.sendRedirect("./home");
+            response.sendRedirect("./app/home/index");
 
         } else {
             request.getSession().invalidate();

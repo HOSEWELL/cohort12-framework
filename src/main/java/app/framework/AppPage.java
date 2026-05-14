@@ -1,5 +1,6 @@
 package app.framework;
 
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -10,18 +11,16 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 
-@WebServlet("/app_page")
-public class AppPage extends HttpServlet {
+@ApplicationScoped
+public class AppPage implements Serializable {
 
     @Inject
     private Cohort12Framework framework;
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-        throws ServletException, IOException {
-
-
+    protected void display(HttpServletRequest request, HttpServletResponse response, String pageContent)
+        throws IOException {
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
@@ -84,7 +83,7 @@ public class AppPage extends HttpServlet {
         /* FORM */
         out.println(".form-group{margin-bottom:15px;}");
         out.println("label{display:block;margin-bottom:5px;font-weight:500;}");
-        out.println("input, select{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:14px;}");
+        out.println("input, select{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:14px;margin-bottom:20px;}");
         out.println("input:focus, select:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 2px rgba(37,99,235,0.2);}");
 
         /* BUTTON */
@@ -106,13 +105,13 @@ public class AppPage extends HttpServlet {
         out.println(request.getSession().getAttribute("UserActualName"));
         out.println("</div>");
         out.println("<div class='nav-links'>");
-        out.println("<a href='./home'>Home</a>");
+        out.println("<a href='../home/index'>Home</a>");
         out.println(framework.generateMenuItem());
         out.println("</div>");
         out.println("</div>");
 
         /* CONTENT */
-        out.println(request.getAttribute(PageContent.CONTENT.name()));
+        out.println(pageContent);
 
         out.println("</body>");
         out.println("</html>");

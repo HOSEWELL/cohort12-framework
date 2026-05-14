@@ -1,22 +1,16 @@
 package app.action;
 
-import app.framework.PageContent;
-import jakarta.servlet.RequestDispatcher;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import app.framework.Action;
+import app.framework.ActionGetMethod;
+import app.framework.ActionResponse;
+import jakarta.enterprise.context.ApplicationScoped;
 
-import java.io.IOException;
+@ApplicationScoped
+@Action(value = "/home", showLink = false)
+public class HomePageAction {
 
-@WebServlet("/home")
-public class HomePage extends HttpServlet {
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+    @ActionGetMethod("index")
+    public ActionResponse index() {
         StringBuilder html = new StringBuilder();
 
         /* Hero */
@@ -53,8 +47,6 @@ public class HomePage extends HttpServlet {
         html.append("</div>");
         html.append("</div>");
 
-        request.setAttribute(PageContent.CONTENT.name(), html.toString());
-        RequestDispatcher rd = request.getRequestDispatcher("./app_page");
-        rd.include(request, response);
+        return new ActionResponse(html.toString());
     }
 }

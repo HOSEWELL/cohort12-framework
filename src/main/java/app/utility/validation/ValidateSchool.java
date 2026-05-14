@@ -16,6 +16,6 @@ public class ValidateSchool implements Validate<School>{
     public boolean process(School school) {
         return school != null
             && school.getSchoolName() != null
-            && school.getSchoolName().contains("Nairobi");
+            && school.getSchoolName().length()>5;
     }
 }

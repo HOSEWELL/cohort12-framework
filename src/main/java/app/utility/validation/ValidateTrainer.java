@@ -19,11 +19,6 @@ public class ValidateTrainer implements Validate<Trainer> {
 
     public boolean process(Trainer trainer){
         System.out.println("Validating Trainer(Teacher) Validation Number: " + validationCounter++);
-        return trainer != null
-               && trainer.getName() != null
-                && !trainer.getName().toLowerCase().contains("pamela")
-                &&  !trainer.getName().toLowerCase().contains("gideon")
-                &&  !trainer.getName().toLowerCase().contains("mathew")
-                &&  !trainer.getName().toLowerCase().contains("fian");
+        return trainer != null && trainer.getName() != null;
     }
 }

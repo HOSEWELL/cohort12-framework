@@ -5,8 +5,8 @@ import app.model.AuditTrail;
 import app.model.School;
 import app.utility.validation.Validate;
 import app.utility.validation.ValidatorQualifier;
-import jakarta.ejb.EJB;
 import jakarta.ejb.Stateless;
+import jakarta.enterprise.event.Event;
 import jakarta.inject.Inject;
 
 import java.util.List;
@@ -14,8 +14,9 @@ import java.util.List;
 @Stateless
 public class SchoolBean {
 
-    @EJB
-    private AuditTrailBean auditTrailBean;
+
+    @Inject
+    private Event<AuditTrail> auditTrailEvent;
 
     @Inject
     private SchoolDao schoolDao;
@@ -26,9 +27,19 @@ public class SchoolBean {
 
     public boolean save(School school){
         if (validate.process(school)) {
-            auditTrailBean.save(new AuditTrail("Creating school: "
-                + school.getSchoolName()));
+            auditTrailEvent.fire(new AuditTrail("Creating school: "
+                    + school.getSchoolName()));
             schoolDao.save(school);
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean delete(Integer id){
+        if (id > 0 ) {
+            auditTrailEvent.fire(new AuditTrail("School Deleted, ID: " + id));
+            schoolDao.delete(id);
             return true;
         }
 
@@ -52,7 +63,7 @@ public class SchoolBean {
                 break;
 
             schoolFound = school.getSchoolName()
-                .equalsIgnoreCase(check.getSchoolName());
+                    .equalsIgnoreCase(check.getSchoolName());
         }
 
         return schoolFound;

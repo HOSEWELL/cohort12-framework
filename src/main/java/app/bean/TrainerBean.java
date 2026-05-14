@@ -35,6 +35,16 @@ public class TrainerBean {
         return false;
     }
 
+    public boolean delete(Integer id){
+        if (id > 0 ) {
+            auditTrailEvent.fire(new AuditTrail("Trainer Deleted, ID: " + id));
+            trainerDao.delete(id);
+            return true;
+        }
+
+        return false;
+    }
+
     public List<Trainer> list(Trainer filter){
         return trainerDao.findAll();
     }

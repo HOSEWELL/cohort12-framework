@@ -23,7 +23,7 @@ public class ValidateCourse implements Validate<Course> {
     public boolean process(Course course) {
         return course != null
             && course.getName() != null
-            && course.getName().length() > 5
-            && schoolBean.exist(new School(course.getSchoolName()));
+            && course.getName().length() > 5;
+            //&& schoolBean.exist(new School(course.getSchoolName()));
     }
 }

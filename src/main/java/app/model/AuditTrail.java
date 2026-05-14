@@ -5,11 +5,8 @@ import app.framework.*;
 
 import java.io.Serializable;
 
-@PageMenuItem(label = "Audit Trail", url = "./audit_trail_lists")
 @DbTable(name = "audit_trail")
-@Cohort12Table(label = "Audit Trail",
-    tableUrl = "./audit_trail_lists",
-    registerUrl = "./")
+@Cohort12Table(label = "Audit Trail")
 public class AuditTrail implements Serializable {
 
     @DbColumn(name = "id", type = "INT", primaryKey = true, autoIncrement = true)
