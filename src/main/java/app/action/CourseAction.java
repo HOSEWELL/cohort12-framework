@@ -55,4 +55,10 @@ public class CourseAction {
         return new ActionResponse(Course.class, courseBean.list(new Course()));
     }
 
+    @ActionPostMethod("upload")
+    public ActionResponse upload(@ActionRequestBody Course course){
+        System.out.println("call ben to upload course!!");
+        return new ActionResponse("Done!!");
+    }
+
 }

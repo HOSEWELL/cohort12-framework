@@ -274,6 +274,23 @@ JEE -
                     ./standalone.sh -c standalone-full.xml
 
 JPA & JTA (INCLUDE BEAN VALIDATION)
+JPA (java persistence API)
+    -collection of interfaces for objects to work with
+    databases, instead of writing raw SQLs
+        - Table == Class
+        - Row == Object
+        - Column == Field
+
+Core Concepts OF JPA
+a) Entity - Class - is simply a real-world object or
+    thing that you want to store information
+    about in a database.
+    @Table - show table name
+    @Id - PK
+    @Column - Field
+b) Persistence Config
+    persistence.xml - main/resources/META-INF/persistence.xml
+
 
 WEB SERVICES
     -JAX-RS - REST

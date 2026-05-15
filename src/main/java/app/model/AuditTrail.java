@@ -2,17 +2,20 @@ package app.model;
 
 
 import app.framework.*;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 
-@DbTable(name = "audit_trail")
+@Entity
+@Table(name = "audit_trail")
 @Cohort12Table(label = "Audit Trail")
 public class AuditTrail implements Serializable {
 
-    @DbColumn(name = "id", type = "INT", primaryKey = true, autoIncrement = true)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @DbColumn(name = "activities", type = "TEXT")
+    @Column(name = "activities", columnDefinition = "TEXT")
     @Cohort12TableCol(label = "Activity Details")
     private String activity;
 

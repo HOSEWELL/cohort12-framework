@@ -1,25 +1,28 @@
 package app.model;
 
 import app.framework.*;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 
-@DbTable(name = "schools")
+@Entity
+@Table(name = "schools")
 @Cohort12Form(label = "Register School", actionUrl = "school/save")
 @Cohort12Table(label = "Schools", addLink = "school/add", deleteLink = "school/delete")
 public class School implements Serializable {
 
-    @DbColumn(name = "id", type = "INT", primaryKey = true, autoIncrement = true)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @DbColumn(name = "school_name", type = "VARCHAR(255)")
+    @Column(name = "school_name", nullable = false)
     @Cohort12FormField(label = "School Name",
         name = "schoolName",
         placeholder = "Please enter School Name")
     @Cohort12TableCol(label = "School Names")
     private String schoolName;
 
-    @DbColumn(name = "school_location", type = "VARCHAR(255)")
+    @Column(name = "school_location")
     @Cohort12FormField(label = "School Location",
         placeholder = "Please enter School Location")
     @Cohort12TableCol(label = "School Location")

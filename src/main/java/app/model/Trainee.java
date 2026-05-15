@@ -1,48 +1,51 @@
 package app.model;
 
 import app.framework.*;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 
-@DbTable(name = "trainees")
+@Entity
+@Table(name = "trainees")
 @Cohort12Form(label = "Trainee Register", actionUrl = "trainee/save")
 @Cohort12Table(label = "Trainees", addLink = "trainee/add", deleteLink = "trainee/delete")
 public class Trainee implements Serializable {
 
-    @DbColumn(name = "id", type = "INT", primaryKey = true, autoIncrement = true)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @DbColumn(name = "name", type = "VARCHAR(255)")
+    @Column(name = "name", nullable = false)
     @Cohort12FormField(label = "Full Name",
             placeholder = "Please enter Trainee Name")
     @Cohort12TableCol(label = "Trainee Name")
     private String name;
 
-    @DbColumn(name = "national_id", type = "VARCHAR(100)")
+    @Column(name = "national_id", nullable = false, unique = true)
     @Cohort12FormField(label = "National ID",
         placeholder = "Please enter ID")
     @Cohort12TableCol(label = "National ID")
     private String nationalId;
 
-    @DbColumn(name = "genders", type = "VARCHAR(255)")
+    @Column(name = "genders", nullable = false)
     @Cohort12FormField(label = "Trainee Gender",
-            placeholder = "Please enter Gender", select = "gender")
+        placeholder = "Please enter Gender", select = "gender")
     @Cohort12TableCol(label = "Trainee Gender")
     private String gender;
 
-    @DbColumn(name = "phone_number", type = "VARCHAR(255)")
+    @Column(name = "phone_number")
     @Cohort12FormField(label = "Phone #",
             placeholder = "Please enter Phone #")
     @Cohort12TableCol(label = "Phone #")
     private String phoneNumber;
 
-    @DbColumn(name = "email_address", type = "VARCHAR(255)")
+    @Column(name = "email_address")
     @Cohort12FormField(label = "Email Address",
             placeholder = "Please enter Email Address")
     @Cohort12TableCol(label = "Phone #")
     private String emailAddress;
 
-    @DbColumn(name = "address", type = "VARCHAR(255)")
+    @Column
     @Cohort12FormField(label = "Address",
             placeholder = "Please enter address")
     @Cohort12TableCol(label = "Phone #")

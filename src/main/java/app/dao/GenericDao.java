@@ -1,220 +1,48 @@
 package app.dao;
 
 
-import app.framework.DbColumn;
-import app.framework.DbTable;
-import app.utility.db.DataSourceHelper;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 
-import java.lang.reflect.Field;
-import java.sql.*;
+import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
 public class GenericDao<T, ID> {
 
-    private final Class<T> entityClass;
-    private final String tableName;
-    private final List<Field> columns = new ArrayList<>();
-    private Field idField;
+    @PersistenceContext
+    private EntityManager em;
 
-    private DataSourceHelper ds;
-
-    public GenericDao(Class<T> entityClass) {
-        this.entityClass = entityClass;
-
-        if (!entityClass.isAnnotationPresent(DbTable.class)) {
-            throw new RuntimeException("Missing @DbTable on " + entityClass.getName());
-        }
-
-        this.tableName = entityClass.getAnnotation(DbTable.class).name();
-
-        for (Field field : entityClass.getDeclaredFields()) {
-            if (field.isAnnotationPresent(DbColumn.class)) {
-                field.setAccessible(true);
-                columns.add(field);
-
-                if (field.getAnnotation(DbColumn.class).primaryKey()) {
-                    idField = field;
-                }
-            }
-        }
-
-        if (idField == null) {
-            throw new RuntimeException("No primary key defined in " + entityClass.getName());
-        }
-    }
-
-    // ---------------------------
-    // CREATE
-    // ---------------------------
     public void save(T entity) {
-        try (Connection conn = ds.getConnection()) {
-
-            List<String> colNames = new ArrayList<>();
-            List<String> placeholders = new ArrayList<>();
-            List<Object> values = new ArrayList<>();
-
-            for (Field field : columns) {
-                DbColumn col = field.getAnnotation(DbColumn.class);
-
-                if (col.autoIncrement()) continue;
-
-                colNames.add(col.name());
-                placeholders.add("?");
-
-                values.add(field.get(entity));
-            }
-
-            String sql = "INSERT INTO " + tableName +
-                    " (" + String.join(",", colNames) + ") VALUES (" +
-                    String.join(",", placeholders) + ")";
-
-            PreparedStatement ps = conn.prepareStatement(sql);
-
-            for (int i = 0; i < values.size(); i++) {
-                ps.setObject(i + 1, values.get(i));
-            }
-
-            ps.executeUpdate();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        em.merge(entity);
     }
 
-    // ---------------------------
-    // READ BY ID
-    // ---------------------------
     public T findById(ID id) {
-        try (Connection conn = ds.getConnection()) {
-
-            String idColumn = idField.getAnnotation(DbColumn.class).name();
-
-            String sql = "SELECT * FROM " + tableName + " WHERE " + idColumn + " = ?";
-
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setObject(1, id);
-
-            ResultSet rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return mapResultSet(rs);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return null;
+        return em.find(getType(), id);
     }
 
-    // ---------------------------
-    // READ ALL
-    // ---------------------------
     public List<T> findAll() {
-        List<T> list = new ArrayList<>();
-
-        try (Connection conn = ds.getConnection()) {
-
-            String sql = "SELECT * FROM " + tableName;
-
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
-
-            while (rs.next()) {
-                list.add(mapResultSet(rs));
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return list;
+        return em.createQuery("SELECT e FROM "
+            + getType().getSimpleName() + " e", getType()).getResultList();
     }
 
-    // ---------------------------
-    // UPDATE
-    // ---------------------------
-    public void update(T entity) {
-        try (Connection conn = ds.getConnection()) {
-
-            List<String> setParts = new ArrayList<>();
-            List<Object> values = new ArrayList<>();
-
-            String idColumn = idField.getAnnotation(DbColumn.class).name();
-            Object idValue = idField.get(entity);
-
-            for (Field field : columns) {
-                DbColumn col = field.getAnnotation(DbColumn.class);
-
-                if (col.primaryKey()) continue;
-
-                setParts.add(col.name() + "=?");
-                values.add(field.get(entity));
-            }
-
-            String sql = "UPDATE " + tableName +
-                    " SET " + String.join(",", setParts) +
-                    " WHERE " + idColumn + "=?";
-
-            PreparedStatement ps = conn.prepareStatement(sql);
-
-            int index = 1;
-
-            for (Object val : values) {
-                ps.setObject(index++, val);
-            }
-
-            ps.setObject(index, idValue);
-
-            ps.executeUpdate();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // ---------------------------
-    // DELETE
-    // ---------------------------
     public void delete(ID id) {
-        try (Connection conn = ds.getConnection()) {
-
-            String idColumn = idField.getAnnotation(DbColumn.class).name();
-
-            String sql = "DELETE FROM " + tableName + " WHERE " + idColumn + "=?";
-
-            PreparedStatement ps = conn.prepareStatement(sql);
-            ps.setObject(1, id);
-
-            ps.executeUpdate();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        em.remove(em.find(getType(), id));
     }
 
-    // ---------------------------
-    // MAPPER
-    // ---------------------------
-    private T mapResultSet(ResultSet rs) throws Exception {
+    @SuppressWarnings("unchecked")
+    public Class<T> getType() {
+        ParameterizedType superClass =
+                (ParameterizedType) getClass().getGenericSuperclass();
 
-        T instance = entityClass.getDeclaredConstructor().newInstance();
-
-        for (Field field : columns) {
-            DbColumn col = field.getAnnotation(DbColumn.class);
-
-            Object value = rs.getObject(col.name());
-            field.set(instance, value);
-        }
-
-        return instance;
+        return (Class<T>) superClass.getActualTypeArguments()[0];
     }
 
-    public DataSourceHelper getDs() {
-        return ds;
+    public EntityManager getEm() {
+        return em;
     }
 
-    public void setDs(DataSourceHelper ds) {
-        this.ds = ds;
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
+
 }
