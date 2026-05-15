@@ -48,7 +48,9 @@ public class Cohort12Framework {
             formBuilder.append("<label>").append(fieldInfo.label()).append(":</label>");
             if (!fieldInfo.select().equalsIgnoreCase("")
                 && formSelections.containsKey(fieldInfo.select())) {
-                    formBuilder.append("<select name='country' required>");
+                    formBuilder.append("<select name='")
+                        .append(field.getName())
+                        .append("' required>");
 
                     formSelections.get(fieldInfo.select()).forEach(formSelection ->
                         formBuilder.append("<option value='").append(formSelection.getValue()).append("'>")
@@ -152,7 +154,7 @@ public class Cohort12Framework {
             tableBuilder.append("<td class='actions'>");
 
             try {
-                Field idField = clazz.getDeclaredField("id");
+                Field idField = clazz.getSuperclass().getDeclaredField("id");
                 idField.setAccessible(true);
 
                 /* EDIT BUTTON */

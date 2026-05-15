@@ -3,17 +3,11 @@ package app.model;
 import app.framework.*;
 import jakarta.persistence.*;
 
-import java.io.Serializable;
-
 @Entity
 @Table(name = "trainees")
 @Cohort12Form(label = "Trainee Register", actionUrl = "trainee/save")
 @Cohort12Table(label = "Trainees", addLink = "trainee/add", deleteLink = "trainee/delete")
-public class Trainee implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Trainee extends BaseEntity {
 
     @Column(name = "name", nullable = false)
     @Cohort12FormField(label = "Full Name",
@@ -42,22 +36,14 @@ public class Trainee implements Serializable {
     @Column(name = "email_address")
     @Cohort12FormField(label = "Email Address",
             placeholder = "Please enter Email Address")
-    @Cohort12TableCol(label = "Phone #")
+    @Cohort12TableCol(label = "Email")
     private String emailAddress;
 
     @Column
     @Cohort12FormField(label = "Address",
             placeholder = "Please enter address")
-    @Cohort12TableCol(label = "Phone #")
+    @Cohort12TableCol(label = "Address")
     private String address;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

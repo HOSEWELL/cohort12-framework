@@ -3,19 +3,13 @@ package app.model;
 import app.framework.*;
 import jakarta.persistence.*;
 
-import java.io.Serializable;
-
 @Entity
 @Table(name = "campuses")
 @Cohort12Form(label = "Register Campus", actionUrl = Campus.DOMAIN_NAME + "/save")
 @Cohort12Table(label = "Campus", addLink = Campus.DOMAIN_NAME + "/add", deleteLink = Campus.DOMAIN_NAME + "/delete")
-public class Campus implements Serializable {
+public class Campus extends BaseEntity {
 
     public static final String DOMAIN_NAME = "campus";
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
 
     @Column(nullable = false)
     @Cohort12FormField(label = "Campus Name",
@@ -23,18 +17,18 @@ public class Campus implements Serializable {
     @Cohort12TableCol(label = "Campus Name")
     private String name;
 
-    @Column(name = "school_name")
-    @Cohort12FormField(label = "School Name",
-        placeholder = "Please enter School Name", select = "school")
+    @Transient
+    @Cohort12FormField(label = "School",
+        placeholder = "Please select school",
+        select = "school")
+    private Long schoolId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private School school;
+
+    @Transient
+    @Cohort12TableCol(label = "School")
     private String schoolName;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -42,6 +36,22 @@ public class Campus implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getSchoolId() {
+        return schoolId;
+    }
+
+    public void setSchoolId(Long schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    public School getSchool() {
+        return school;
+    }
+
+    public void setSchool(School school) {
+        this.school = school;
     }
 
     public String getSchoolName() {

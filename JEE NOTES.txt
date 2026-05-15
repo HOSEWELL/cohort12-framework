@@ -290,6 +290,27 @@ a) Entity - Class - is simply a real-world object or
     @Column - Field
 b) Persistence Config
     persistence.xml - main/resources/META-INF/persistence.xml
+c)EntityManagerFactory - creates entity manager(EntityManager)
+    use @PersistenceUnit to inject EntityManagerFactory.
+c)EntityManager - object allows jpa(entities) to interact with the db
+    use @PersistenceContext to inject EntityManager for CMT
+d)Transaction Management
+    - Container Managed Transaction(CMT) --simply inject the EntityManager
+    - Bean Managed Transaction(BMT) -- inject the EntityManagerFactory
+e)Common Annotation
+    @Entity
+    @Table
+    @Id + @GeneratedValue
+    @Column
+    @ManyToOne + @JoinColumn
+    @OneToMany
+    @OneToOne
+    @Temporal -- dates time,date, both
+    @Enumerated - works(enums)
+    @Transient
+    @Embedded
+    @MappedSuperclass for inheritance
+
 
 
 WEB SERVICES

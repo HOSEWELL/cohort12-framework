@@ -29,7 +29,7 @@ public class CourseAction {
     public ActionResponse add() {
         List<SelectBox> schoolSelections = new ArrayList<>();
         schoolBean.list(new School()).forEach(school -> schoolSelections.add(SelectBox.builder()
-            .value(school.getSchoolName())
+            .value(school.getId()+"")
             .name(school.getSchoolName())
             .build()));
 

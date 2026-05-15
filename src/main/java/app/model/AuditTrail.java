@@ -4,16 +4,10 @@ package app.model;
 import app.framework.*;
 import jakarta.persistence.*;
 
-import java.io.Serializable;
-
 @Entity
 @Table(name = "audit_trail")
 @Cohort12Table(label = "Audit Trail")
-public class AuditTrail implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class AuditTrail extends BaseEntity {
 
     @Column(name = "activities", columnDefinition = "TEXT")
     @Cohort12TableCol(label = "Activity Details")
@@ -23,14 +17,6 @@ public class AuditTrail implements Serializable {
 
     public AuditTrail(String activity){
         this.activity = activity;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getActivity() {

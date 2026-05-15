@@ -7,11 +7,7 @@ import jakarta.persistence.*;
 @Table(name = "trainers")
 @Cohort12Form(label = "Trainer Register", actionUrl = "trainer/save")
 @Cohort12Table(label = "Trainers",  addLink = "trainer/add", deleteLink = "trainer/delete")
-public class Trainer{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+public class Trainer extends BaseEntity{
 
     @Column(nullable = false)
     @Cohort12FormField(label = "Trainer Name",
@@ -34,21 +30,13 @@ public class Trainer{
     @Column(name = "email_address", nullable = false)
     @Cohort12FormField(label = "Trainer Email Address",
         placeholder = "Please enter  Email Address")
-    @Cohort12TableCol(label = "Phone #")
+    @Cohort12TableCol(label = "Email")
     private String emailAddress;
 
     @Column(name = "qualification", columnDefinition = "TEXT")
     @Cohort12FormField(label = "Trainer Qualifications",
         placeholder = "Please enter Qualifications")
     private String qualification;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

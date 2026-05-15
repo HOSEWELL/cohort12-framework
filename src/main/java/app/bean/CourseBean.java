@@ -1,9 +1,9 @@
 package app.bean;
 
 import app.dao.CourseDao;
-import app.dao.SchoolDao;
 import app.model.AuditTrail;
 import app.model.Course;
+import app.model.School;
 import app.utility.validation.Validate;
 import jakarta.ejb.Stateless;
 import jakarta.enterprise.event.Event;
@@ -25,15 +25,19 @@ public class CourseBean {
     @Named("ValidCourse")
     public Validate<Course> validate;
 
-    public boolean save(Course course){
+    public Course save(Course course){
         if (validate.process(course)) {
+            if (course.getSchoolId() != null)
+                course.setSchool(courseDao.getEm()
+                    .getReference(School.class, course.getSchoolId()));
+
             auditTrailEvent.fire(new AuditTrail("Creating course: "
-                    + course.getName()));
-            courseDao.save(course);
-            return true;
+                + course.getName()));
+
+            course = courseDao.save(course);
         }
 
-        return false;
+        return course;
     }
 
     public boolean delete(Integer id){
@@ -47,7 +51,11 @@ public class CourseBean {
     }
 
     public List<Course> list(Course filter){
-        return courseDao.findAll();
+        List<Course> courses = courseDao.findAll();
+        for (Course course : courses)
+            course.setSchoolName(course.getSchool().getSchoolName());
+
+        return courses;
     }
 
 }

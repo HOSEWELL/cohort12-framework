@@ -29,7 +29,7 @@ public class CampusAction {
     public ActionResponse add() {
         List<SelectBox> schoolSelections = new ArrayList<>();
         schoolBean.list(new School()).forEach(school -> schoolSelections.add(SelectBox.builder()
-            .value(school.getSchoolName())
+            .value(school.getId()+"")
             .name(school.getSchoolName())
             .build()));
 
@@ -40,6 +40,7 @@ public class CampusAction {
 
     @ActionPostMethod("save")
     public ActionResponse save(@ActionRequestBody Campus campus) {
+
         campusBean.save(campus);
         return new ActionResponse(Campus.class, this.list().getResponseDataList());
     }

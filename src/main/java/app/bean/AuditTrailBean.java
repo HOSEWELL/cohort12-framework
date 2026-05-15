@@ -5,10 +5,12 @@ import app.model.AuditTrail;
 import jakarta.annotation.Resource;
 import jakarta.ejb.Remote;
 import jakarta.ejb.Singleton;
+import jakarta.enterprise.event.Observes;
 import jakarta.inject.Inject;
 import jakarta.jms.JMSContext;
 import jakarta.jms.Queue;
 
+import java.util.Date;
 import java.util.List;
 
 @Singleton
@@ -24,10 +26,12 @@ public class AuditTrailBean {
     @Inject
     private AuditTrailDao auditTrailDao;
 
-    public void save(AuditTrail auditTrail){
+    public void save(@Observes AuditTrail auditTrail){
+        auditTrail.setActivity(new Date() + ": "
+                + auditTrail.getActivity());
         auditTrailDao.save(auditTrail);
         context.createProducer().send(auditQue,
-            auditTrail.getActivity());
+                auditTrail.getActivity());
     }
 
     public List<AuditTrail> list(AuditTrail filter){
