@@ -35,7 +35,7 @@ public class TraineeBean {
         return false;
     }
 
-    public boolean delete(Integer id){
+    public boolean delete(Long id){
         if (id > 0 ) {
             auditTrailEvent.fire(new AuditTrail("Trainee Deleted, ID: " + id));
             traineeDao.delete(id);

@@ -2,9 +2,13 @@ package app.model;
 
 import app.framework.*;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Formula;
 
 @Entity
-@Table(name = "courses")
+@Table(name = "courses",
+indexes = {
+    @Index(name = "courses_course_category", columnList = "course_category")
+})
 @Cohort12Form(label = "Course Register", actionUrl = "course/save")
 @Cohort12Table(label = "Courses", addLink = "course/add", deleteLink = "course/delete")
 public class Course extends BaseEntity {
@@ -24,9 +28,18 @@ public class Course extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private School school;
 
-    @Transient
     @Cohort12TableCol(label = "School")
+    @Formula("(select s.school_name from schools s " +
+        "where s.id=school_id)")
     private String schoolName;
+
+    @Column(name = "course_category")
+    private String courseCategory;
+
+
+    public Course(){}
+
+    public Course(String name){ this.name = name;}
 
     public String getName() {
         return name;
@@ -58,5 +71,13 @@ public class Course extends BaseEntity {
 
     public void setSchoolName(String schoolName) {
         this.schoolName = schoolName;
+    }
+
+    public String getCourseCategory() {
+        return courseCategory;
+    }
+
+    public void setCourseCategory(String courseCategory) {
+        this.courseCategory = courseCategory;
     }
 }

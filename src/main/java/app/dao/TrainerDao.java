@@ -1,9 +1,9 @@
 package app.dao;
 
 import app.model.Trainer;
-import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.context.ApplicationScoped;
 
-@Dependent
-public class TrainerDao extends GenericDao<Trainer, Integer> {
+@ApplicationScoped
+public class TrainerDao extends GenericDao<Trainer, Long> {
 
 }

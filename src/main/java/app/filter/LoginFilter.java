@@ -8,24 +8,18 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
-@WebFilter(urlPatterns = {"/*"})
+@WebFilter(urlPatterns = {"/app/*"})
 public class LoginFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;
         HttpSession session = httpRequest.getSession(false);
 
-        String defaultUri = httpRequest.getContextPath() + "/";
+
         String loginUri = httpRequest.getContextPath() + "/login";
-        String indexUri = httpRequest.getContextPath() + "/index.jsp";
-        String contactUsUri = "contact_us";
-        String pageRequestUri = httpRequest.getRequestURI();
         boolean loggedIn = session != null && session.getAttribute("SESSION_ID") != null;
 
-        if(loggedIn || pageRequestUri.equalsIgnoreCase(loginUri)
-                || pageRequestUri.equalsIgnoreCase(defaultUri)
-                || pageRequestUri.equalsIgnoreCase(indexUri)
-                || pageRequestUri.contains(contactUsUri)){
+        if(loggedIn){
             filterChain.doFilter(servletRequest, servletResponse);
 
         } else {

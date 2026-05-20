@@ -30,7 +30,7 @@ public class TrainerAction  {
     }
 
     @ActionGetMethod("delete/{id}")
-    public ActionResponse delete(@ActionPathParam("id") Integer id) {
+    public ActionResponse delete(@ActionPathParam("id") Long id) {
         trainerBean.delete(id);
         return new ActionResponse(Trainer.class, this.list().getResponseDataList());
     }

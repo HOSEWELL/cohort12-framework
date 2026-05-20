@@ -1,12 +1,12 @@
 package app.dao;
 
 import app.model.School;
-import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.util.List;
 
-@Dependent
-public class SchoolDao extends GenericDao<School, Integer> {
+@ApplicationScoped
+public class SchoolDao extends GenericDao<School, Long> {
 
     public List<School> list(School filter){
        return getEm().createQuery("SELECT s FROM School s " +
@@ -14,4 +14,5 @@ public class SchoolDao extends GenericDao<School, Integer> {
                 .setParameter("schoolName", filter.getSchoolName())
                 .getResultList();
     }
+
 }

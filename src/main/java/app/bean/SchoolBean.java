@@ -3,6 +3,7 @@ package app.bean;
 import app.dao.SchoolDao;
 import app.model.AuditTrail;
 import app.model.School;
+import app.model.Status;
 import app.utility.validation.Validate;
 import app.utility.validation.ValidatorQualifier;
 import jakarta.ejb.Stateless;
@@ -29,6 +30,10 @@ public class SchoolBean {
         if (validate.process(school)) {
             auditTrailEvent.fire(new AuditTrail("Creating school: "
                     + school.getSchoolName()));
+
+            if (school.getStatus() == null)
+                school.setStatus(Status.ACTIVE);
+
             schoolDao.save(school);
             return true;
         }
@@ -36,7 +41,11 @@ public class SchoolBean {
         return false;
     }
 
-    public boolean delete(Integer id){
+    public School findById(Long id){
+        return schoolDao.findById(id);
+    }
+
+    public boolean delete(Long id){
         if (id > 0 ) {
             auditTrailEvent.fire(new AuditTrail("School Deleted, ID: " + id));
             schoolDao.delete(id);
@@ -67,6 +76,26 @@ public class SchoolBean {
         }
 
         return schoolFound;
+
+    }
+
+    public void updateStatus(School school) throws Exception{
+
+        if (school == null || school.getId() == null)
+            throw new RuntimeException("Invalid school details!!");
+
+        if (school.getStatus() == null)
+            throw new RuntimeException("Please provide the status to update!!");
+
+        School schoolToUpdate = schoolDao.findById(school.getId());
+
+        if (schoolToUpdate.getStatus() == school.getStatus())
+            throw new RuntimeException("School is already "
+                    + school.getStatus().getName());
+
+        schoolToUpdate.setStatus(school.getStatus());
+        schoolDao.save(school);
+
 
     }
 

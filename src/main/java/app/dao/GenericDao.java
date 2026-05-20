@@ -7,7 +7,7 @@ import jakarta.persistence.PersistenceContext;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
-public class GenericDao<T, ID> {
+public abstract class GenericDao<T, ID> {
 
     @PersistenceContext
     private EntityManager em;

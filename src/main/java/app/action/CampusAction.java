@@ -46,7 +46,7 @@ public class CampusAction {
     }
 
     @ActionGetMethod("delete/{id}")
-    public ActionResponse delete(@ActionPathParam("id") Integer id) {
+    public ActionResponse delete(@ActionPathParam("id") Long id) {
         campusBean.delete(id);
         return new ActionResponse(Campus.class, this.list().getResponseDataList());
     }

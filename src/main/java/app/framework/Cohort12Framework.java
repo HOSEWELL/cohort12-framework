@@ -170,7 +170,7 @@ public class Cohort12Framework {
                     .append(cohort12Table.deleteLink())
                     .append("/")
                     .append(idField.get(data))
-                    .append("' class='icon-btn delete-btn' title='Delete' onclick='return confirm(\"Delete this trainer?\")'>");
+                    .append("' class='icon-btn delete-btn' title='Delete' onclick='return confirm(\"Delete record?\")'>");
                 tableBuilder.append("<i class='fa-solid fa-trash'></i>");
                 tableBuilder.append("</a>");
 

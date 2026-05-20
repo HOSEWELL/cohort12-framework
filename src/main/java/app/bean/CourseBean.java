@@ -40,7 +40,7 @@ public class CourseBean {
         return course;
     }
 
-    public boolean delete(Integer id){
+    public boolean delete(Long id){
         if (id > 0 ) {
             auditTrailEvent.fire(new AuditTrail("Course Deleted, ID: " + id));
             courseDao.delete(id);
@@ -51,11 +51,7 @@ public class CourseBean {
     }
 
     public List<Course> list(Course filter){
-        List<Course> courses = courseDao.findAll();
-        for (Course course : courses)
-            course.setSchoolName(course.getSchool().getSchoolName());
-
-        return courses;
+        return courseDao.findAll();
     }
 
 }

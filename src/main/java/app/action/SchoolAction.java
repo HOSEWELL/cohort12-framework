@@ -29,7 +29,7 @@ public class SchoolAction {
     }
 
     @ActionGetMethod("delete/{id}")
-    public ActionResponse delete(@ActionPathParam("id") Integer id) {
+    public ActionResponse delete(@ActionPathParam("id") Long id) {
         schoolBean.delete(id);
         return new ActionResponse(School.class, this.list().getResponseDataList());
     }
@@ -37,6 +37,17 @@ public class SchoolAction {
     @ActionGetMethod("list")
     public ActionResponse list() {
         return new ActionResponse(School.class, schoolBean.list(new School()));
+    }
+
+    @ActionPostMethod("update_status")
+    public ActionResponse updateStatus(@ActionRequestBody School school) {
+        try {
+            schoolBean.updateStatus(school);
+            return new ActionResponse(School.class, this.list().getResponseDataList());
+        } catch (Exception e) {
+            return new ActionResponse(e.getMessage());
+        }
+
     }
 
 }

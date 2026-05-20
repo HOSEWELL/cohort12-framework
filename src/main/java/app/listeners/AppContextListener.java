@@ -1,7 +1,9 @@
 package app.listeners;
 
 
+import app.bean.SchoolBean;
 import app.utility.bootstrap.Bootstrap;
+import jakarta.ejb.EJB;
 import jakarta.enterprise.inject.Any;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
@@ -16,9 +18,11 @@ public class AppContextListener implements ServletContextListener {
     @Any
     private Instance<Bootstrap> bootstraps;
 
+    @EJB
+    private SchoolBean schoolBean;
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        System.out.println("whats happening...");
         for (Bootstrap bootstrap : bootstraps)
             bootstrap.process();
     }

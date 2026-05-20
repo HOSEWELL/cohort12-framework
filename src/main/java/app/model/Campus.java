@@ -2,6 +2,8 @@ package app.model;
 
 import app.framework.*;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Formula;
+
 
 @Entity
 @Table(name = "campuses")
@@ -26,9 +28,17 @@ public class Campus extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private School school;
 
-    @Transient
     @Cohort12TableCol(label = "School")
+    @Formula("(select s.school_name from schools s " +
+        "where s.id=school_id)")
     private String schoolName;
+
+    @Embedded
+    private Address address;
+
+    public Campus(){}
+
+    public Campus(String name){ this.name = name;}
 
     public String getName() {
         return name;
@@ -60,5 +70,13 @@ public class Campus extends BaseEntity {
 
     public void setSchoolName(String schoolName) {
         this.schoolName = schoolName;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }
