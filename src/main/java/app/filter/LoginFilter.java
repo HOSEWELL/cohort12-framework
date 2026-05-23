@@ -10,6 +10,7 @@ import java.io.IOException;
 
 @WebFilter(urlPatterns = {"/app/*"})
 public class LoginFilter implements Filter {
+
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpServletResponse httpResponse = (HttpServletResponse) servletResponse;

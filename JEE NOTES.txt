@@ -339,9 +339,32 @@ WEB SERVICES - API over network
             -@PathParam
             -@QueryParam
     -JAX-WS - SOAP
+        -XML
+            <students maxSize="10">
+                <student>
+                    <name>Mike</name>
+                    <age>100</age>
+                </student>
+                <student>
+                    <name>Mike</name>
+                    <age>100</age>
+                </student>
+            </lists>
+        -WSDL (Web Service Description Language)
+        -HTTP
+        Core Annotations
+        @WebService
+        @WebMethod
+        @WebParam
+
+
     -WEBSOCKET
 JMS * done *
 JAKARTA SECURITY
+    BASIC AUTH
+    JWT
+    
+
 
 PROJECT STRUCTURE
 

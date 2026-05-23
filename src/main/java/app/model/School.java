@@ -3,11 +3,16 @@ package app.model;
 import app.framework.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.xml.bind.annotation.XmlAccessType;
+import jakarta.xml.bind.annotation.XmlAccessorType;
+import jakarta.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlTransient;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+@XmlAccessorType(XmlAccessType.FIELD)
 @Entity
 @Table(name = "schools")
 @Cohort12Form(label = "Register School", actionUrl = "school/save")
@@ -27,10 +32,12 @@ public class School extends BaseEntity {
     @Cohort12TableCol(label = "School Location")
     private String schoolLocation;
 
+    @XmlTransient
     @OneToMany(mappedBy = "school", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private List<Campus> campuses = new ArrayList<>();
 
+    @XmlTransient
     @OneToMany(mappedBy = "school", fetch = FetchType.LAZY,
             cascade = CascadeType.ALL)
     private List<Course> courses = new ArrayList<>();
@@ -52,6 +59,7 @@ public class School extends BaseEntity {
     public String getSchoolName() {
         return schoolName;
     }
+
 
     public void setSchoolName(String schoolName) {
         this.schoolName = schoolName;

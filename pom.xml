@@ -27,6 +27,13 @@
     </dependency>
 
     <dependency>
+      <groupId>jakarta.xml.ws</groupId>
+      <artifactId>jakarta.xml.ws-api</artifactId>
+      <version>4.0.3</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.hibernate.orm</groupId>
       <artifactId>hibernate-core</artifactId>
       <version>6.6.15.Final</version>
