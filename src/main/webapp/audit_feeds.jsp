@@ -130,7 +130,7 @@
         <div class="feed-title">Recent Activities</div>
     </div>
     <script>
-        const socket = new WebSocket("ws://localhost:8080/cohort12/audit_feeds");
+        const socket = new WebSocket("ws://localhost:8082/cohort12/audit_feeds");
 
         socket.onopen = function() {
             console.log("Connected!!!!!");
