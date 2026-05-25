@@ -2,6 +2,7 @@ package app.bean;
 
 import app.dao.AuditTrailDao;
 import app.model.AuditTrail;
+import app.websocket.AuditTrailWs;
 import jakarta.annotation.Resource;
 import jakarta.ejb.Remote;
 import jakarta.ejb.Singleton;
@@ -32,6 +33,7 @@ public class AuditTrailBean {
         auditTrailDao.save(auditTrail);
         context.createProducer().send(auditQue,
                 auditTrail.getActivity());
+        AuditTrailWs.broadcast(auditTrail.getActivity());
     }
 
     public List<AuditTrail> list(AuditTrail filter){

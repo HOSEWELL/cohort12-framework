@@ -357,13 +357,11 @@ WEB SERVICES - API over network
         @WebMethod
         @WebParam
 
-
     -WEBSOCKET
 JMS * done *
 JAKARTA SECURITY
     BASIC AUTH
     JWT
-    
 
 
 PROJECT STRUCTURE
